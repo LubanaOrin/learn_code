@@ -120,7 +120,27 @@ Teaching focus:
 - Why missing values, duplicates, and outliers matter.
 - Why we document cleaning decisions instead of silently changing data.
 
-Status: Not started.
+Status: Completed.
+
+Progress:
+
+- Checked for missing values with `df.isnull().sum()`.
+- Confirmed every column has 0 missing values.
+- Checked for duplicate rows with `df.duplicated().sum()`.
+- Confirmed there are 0 duplicate rows.
+- Inspected the `Unnamed: 0` column and confirmed it only repeated row numbers.
+- Removed `Unnamed: 0` because it does not describe the songs.
+- Reviewed numeric summaries with `df.describe()`.
+- Decided not to remove outliers because the minimum and maximum values still make sense for songs in this dataset.
+- Added a new `duration_minutes` column to make song length easier to understand than `duration_ms`.
+
+Teaching note:
+
+- Cleaning data means checking whether the dataset has problems before answering questions.
+- Missing values are empty cells.
+- Duplicate rows are repeated records.
+- Outliers are values that look unusually high or low compared with the rest of the data.
+- In this dataset, the values looked reasonable, so we documented the check instead of changing the data unnecessarily.
 
 ### Phase 5: Exploratory Data Analysis
 
