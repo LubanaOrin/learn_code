@@ -162,7 +162,34 @@ Teaching focus:
 - Reading correlation tables.
 - Comparing groups with summary statistics.
 
-Status: Not started.
+Status: Completed.
+
+Progress:
+
+- Started Phase 5 after completing data cleaning.
+- First focus: count songs by artist to understand which artists appear most often in the Top 50.
+- Found that Billie Eilish, Dua Lipa, and Travis Scott each appear 3 times, the highest artist count in this Top 50 dataset.
+- Counted 40 unique artists across the 50 tracks.
+- Counted 45 unique albums across the 50 tracks.
+- Found that `Future Nostalgia` appears 3 times, while `Hollywood's Bleeding`, `Fine Line`, and `Changes` each appear 2 times.
+- Started counting genres and noticed ` Electro-pop` has an extra leading space, so the genre text should be cleaned before final genre analysis.
+- Cleaned extra spaces from the `genre` column with `.str.strip()`.
+- Found that Pop is the most common genre with 14 tracks, followed by Hip-Hop/Rap with 13 tracks.
+- Sorted songs by `danceability` and found that `WAP (feat. Megan Thee Stallion)` has the highest danceability score at 0.935.
+- Sorted songs by lowest `danceability` and found that `lovely (with Khalid)` by Billie Eilish has the lowest danceability score at 0.351.
+- Sorted songs by `loudness` and found that `Tusa` by KAROL G is the loudest track at -3.280.
+- Sorted songs by lowest `loudness` and found that `everything i wanted` by Billie Eilish is the quietest track at -14.454.
+- Sorted songs by `duration_minutes` and found that `SICKO MODE` by Travis Scott is the longest track at about 5.21 minutes.
+- Sorted songs by shortest `duration_minutes` and found that `Mood (feat. iann dior)` by 24kGoldn is the shortest track at about 2.34 minutes.
+- Compared average audio features by genre and noted that small genre groups with only one song should be interpreted carefully.
+- Filtered genre comparison to genres with at least 2 songs and found Electro-pop has the highest average danceability among those groups.
+- Calculated correlations between numeric features.
+- Found a strong positive relationship between energy and loudness, a negative relationship between energy and acousticness, and a moderate positive relationship between danceability and valence.
+
+Phase result:
+
+- Phase 5 answered the main exploratory analysis questions about artists, albums, genres, song danceability, loudness, duration, genre averages, and numeric feature relationships.
+- The notebook now has the main analysis needed before polishing explanations in Phase 6.
 
 ### Phase 6: Notebook Explanations
 
