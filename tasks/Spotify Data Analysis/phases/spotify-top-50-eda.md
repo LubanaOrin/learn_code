@@ -206,7 +206,18 @@ Teaching focus:
 - How to write analysis for a product manager and senior analyst.
 - Difference between code output and insight.
 
-Status: Not started.
+Status: In progress.
+
+Progress:
+
+- Started Phase 6 after completing the main exploratory analysis.
+- Focus: improve the notebook explanations so the analysis is easier to present and review.
+- Added clearer notebook structure with project goal, dataset description, and analysis headings.
+- Added final summary and limitations sections to explain the main findings and the boundaries of the dataset.
+
+Phase result:
+
+- The notebook now reads more like a complete analysis report, with a goal, dataset description, analysis headings, explanations, final findings, and limitations.
 
 ### Phase 7: Improvements and Review Preparation
 
