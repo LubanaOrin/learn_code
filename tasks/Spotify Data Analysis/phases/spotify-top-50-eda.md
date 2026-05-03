@@ -206,7 +206,7 @@ Teaching focus:
 - How to write analysis for a product manager and senior analyst.
 - Difference between code output and insight.
 
-Status: In progress.
+Status: Completed.
 
 Progress:
 
@@ -218,6 +218,11 @@ Progress:
 Phase result:
 
 - The notebook now reads more like a complete analysis report, with a goal, dataset description, analysis headings, explanations, final findings, and limitations.
+- Added a dedicated assignment requirement check section so the required questions are answered directly.
+- Added exact filtered answers for danceability above 0.7, danceability below 0.4, loudness above -5, and loudness below -8.
+- Added exact genre answers for total genres and genres with only one song.
+- Added specific comparisons for Pop, Hip-Hop/Rap, Dance/Electronic, and Alternative/Indie using danceability, loudness, and acousticness.
+- Added clearer correlation categories for strongly positive, strongly negative, and not strongly correlated features.
 
 ### Phase 7: Improvements and Review Preparation
 
@@ -236,7 +241,16 @@ Teaching focus:
 - How to explain technical concepts in plain English.
 - How to present findings confidently.
 
-Status: Not started.
+Status: Completed.
+
+Progress:
+
+- Added notebook suggestions for how the analysis could be improved.
+- Added short review answers about Pandas DataFrames, why Pandas is fast, and why Pandas Series can be useful compared with Python lists.
+
+Phase result:
+
+- The notebook now includes improvement suggestions and beginner-friendly review answers for likely course discussion questions.
 
 ## Questions To Confirm
 
