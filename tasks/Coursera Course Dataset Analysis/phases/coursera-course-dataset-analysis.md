@@ -120,16 +120,47 @@ What this phase teaches:
 
 ## Phase 3 - Exploratory Data Analysis
 
-Status: Not started
+Status: Complete
 
 Tasks:
 
-- [ ] Identify top organizations by number of courses.
-- [ ] Compare course ratings by difficulty level.
-- [ ] Compare course ratings by certificate type.
-- [ ] Find the most enrolled courses.
-- [ ] Explore relationships between rating and enrollment.
-- [ ] Look for interesting patterns or outliers.
+- [x] Identify top organizations by number of courses.
+- [x] Compare course ratings by difficulty level.
+- [x] Compare course ratings by certificate type.
+- [x] Find the most enrolled courses.
+- [x] Explore relationships between rating and enrollment.
+- [x] Look for interesting patterns or outliers.
+
+Phase 3 results:
+
+- Added the exploratory data analysis section to `notebooks/coursera_course_dataset_analysis.ipynb`.
+- Used the cleaned dataset from `outputs/coursera_courses_cleaned.csv`.
+- Found the top organizations by number of courses.
+- Compared ratings by difficulty level.
+- Compared ratings by certificate type.
+- Found the top enrolled courses.
+- Checked the correlation between rating and enrollment.
+- Compared enrollment patterns by difficulty and certificate type.
+
+Key findings:
+
+- The cleaned dataset contains 891 course records.
+- University of Pennsylvania has the most courses in the dataset, with 59 courses.
+- University of Michigan is second with 41 courses.
+- Google Cloud is third with 34 courses.
+- Mixed-difficulty courses have the highest average rating at 4.709.
+- Advanced courses have the lowest average rating at 4.600, but there are only 19 Advanced courses.
+- Regular courses have the highest average rating by certificate type at 4.707.
+- Specializations have an average rating of 4.618.
+- The most enrolled course is Stanford University's `Machine Learning`, with 3,200,000 students.
+- The second most enrolled course is Yale University's `The Science of Well-Being`, with 2,500,000 students.
+- The correlation between rating and enrollment is 0.0711, which means there is no strong linear relationship between rating and enrollment in this dataset.
+- Mixed-difficulty courses have the highest median enrollment by difficulty, with 62,000 students.
+- Professional certificates have the highest median enrollment by certificate type, with 145,000 students, but there are only 12 professional certificate records.
+
+Important interpretation:
+
+Enrollment is skewed by a few very large courses. This means the average enrollment can be pulled upward by unusually popular courses, so median enrollment is often more useful for comparing typical courses.
 
 What this phase teaches:
 
