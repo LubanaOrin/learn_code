@@ -210,17 +210,40 @@ What this phase teaches:
 
 ## Phase 5 - Final Notebook Polish
 
-Status: Not started
+Status: Complete
 
 Tasks:
 
-- [ ] Put the notebook in the same order as the assignment requirements.
-- [ ] Add a title and dataset description near the top.
-- [ ] Add an executive summary with exact numbers.
-- [ ] Add limitations and suggestions for improvement.
-- [ ] Remove unused code and commented-out experiments.
-- [ ] Run the notebook from top to bottom.
-- [ ] Confirm the final notebook is ready for review.
+- [x] Put the notebook in the same order as the assignment requirements.
+- [x] Add a title and dataset description near the top.
+- [x] Add an executive summary with exact numbers.
+- [x] Add limitations and suggestions for improvement.
+- [x] Remove unused code and commented-out experiments.
+- [x] Run the notebook from top to bottom.
+- [x] Confirm the final notebook is ready for review.
+
+Phase 5 results:
+
+- Added an executive summary near the top of the notebook.
+- Improved the dataset description.
+- Added a clear data loading section.
+- Added limitations.
+- Added suggestions for improvement.
+- Added final quality checks with `assert` statements.
+- Added exact commands for running the notebook.
+- Reran the notebook successfully from top to bottom.
+- Confirmed the notebook structure is ready for review:
+  - title
+  - executive summary
+  - dataset description
+  - data loading
+  - data cleaning
+  - exploratory data analysis
+  - visualizations and insights
+  - limitations
+  - suggestions for improvement
+  - final notebook check
+  - run instructions
 
 What this phase teaches:
 
@@ -228,10 +251,10 @@ What this phase teaches:
 
 ## Final Checklist
 
-- [ ] Dataset loaded successfully.
-- [ ] Cleaning steps are explained.
-- [ ] EDA questions are answered with exact numbers.
-- [ ] Important findings have visualizations.
-- [ ] Notebook has clear markdown explanations.
-- [ ] Suggestions for improvement are included.
-- [ ] Notebook runs from start to finish without errors.
+- [x] Dataset loaded successfully.
+- [x] Cleaning steps are explained.
+- [x] EDA questions are answered with exact numbers.
+- [x] Important findings have visualizations.
+- [x] Notebook has clear markdown explanations.
+- [x] Suggestions for improvement are included.
+- [x] Notebook runs from start to finish without errors.
