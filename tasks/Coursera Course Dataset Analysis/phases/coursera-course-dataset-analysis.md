@@ -169,15 +169,39 @@ What this phase teaches:
 
 ## Phase 4 - Visualizations and Insights
 
-Status: Not started
+Status: Complete
 
 Tasks:
 
-- [ ] Create bar charts for category counts and top organizations.
-- [ ] Create boxplots for rating comparisons.
-- [ ] Create a histogram for rating distribution.
-- [ ] Create a scatterplot for rating versus enrollment.
-- [ ] Write plain-English insights under important charts.
+- [x] Create bar charts for category counts and top organizations.
+- [x] Create boxplots for rating comparisons.
+- [x] Create a histogram for rating distribution.
+- [x] Create a scatterplot for rating versus enrollment.
+- [x] Write plain-English insights under important charts.
+
+Phase 4 results:
+
+- Added a visualization section to `notebooks/coursera_course_dataset_analysis.ipynb`.
+- Reran the notebook successfully from top to bottom.
+- Saved chart images in `outputs/charts/`.
+
+Charts created:
+
+- `top_organizations_by_course_count.png`
+- `course_count_by_certificate_type.png`
+- `rating_distribution.png`
+- `ratings_by_difficulty.png`
+- `ratings_by_certificate_type.png`
+- `rating_vs_enrollment.png`
+
+Key visualization insights:
+
+- Bar charts show that University of Pennsylvania, University of Michigan, and Google Cloud are the most common organizations in the dataset.
+- The certificate type bar chart shows that regular courses dominate the dataset with 582 records.
+- The rating histogram shows that ratings are concentrated near the high end of the scale.
+- The difficulty boxplot shows that all difficulty groups have generally high ratings.
+- The certificate type boxplot shows that regular courses have the highest average rating, but all groups rate strongly.
+- The scatterplot shows no strong visual relationship between rating and enrollment, matching the weak correlation of 0.0711.
 
 What this phase teaches:
 
