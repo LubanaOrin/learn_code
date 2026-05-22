@@ -60,17 +60,58 @@ What this phase teaches:
 
 ## Phase 2 - Data Cleaning
 
-Status: Not started
+Status: Complete
 
 Tasks:
 
-- [ ] Check column names and rename them if needed.
-- [ ] Check missing values.
-- [ ] Check duplicate rows and duplicate course titles.
-- [ ] Convert enrolled student counts such as `5.3k` and `130k` into numbers.
-- [ ] Check whether ratings are valid numeric values.
-- [ ] Check category values in certificate type and difficulty.
-- [ ] Save or document the cleaned dataset.
+- [x] Check column names and rename them if needed.
+- [x] Check missing values.
+- [x] Check duplicate rows and duplicate course titles.
+- [x] Convert enrolled student counts such as `5.3k` and `130k` into numbers.
+- [x] Check whether ratings are valid numeric values.
+- [x] Check category values in certificate type and difficulty.
+- [x] Save or document the cleaned dataset.
+
+Phase 2 results:
+
+- Created the first notebook: `notebooks/coursera_course_dataset_analysis.ipynb`.
+- Added project requirements: `requirements.txt`.
+- Installed the required Python packages: Pandas, Jupyter, Matplotlib, and Seaborn.
+- Removed the unnamed column because it is an old exported index, not a real course feature.
+- Renamed columns to clearer names:
+  - `course_organization` became `organization`.
+  - `course_Certificate_type` became `certificate_type`.
+  - `course_rating` became `rating`.
+  - `course_difficulty` became `difficulty`.
+  - `course_students_enrolled` became `students_enrolled_raw`.
+- Added a numeric `students_enrolled` column.
+- Saved the cleaned dataset to `outputs/coursera_courses_cleaned.csv`.
+
+Cleaning checks:
+
+- Cleaned dataset shape: 891 rows and 7 columns.
+- Missing values: 0.
+- Duplicate full rows: 0.
+- Repeated course titles: 3 repeated title cases, affecting 6 rows.
+- Rating range: 3.3 to 5.0.
+- Enrollment range: 1,500 to 3,200,000 students.
+- Certificate types:
+  - COURSE: 582.
+  - SPECIALIZATION: 297.
+  - PROFESSIONAL CERTIFICATE: 12.
+- Difficulty levels:
+  - Beginner: 487.
+  - Intermediate: 198.
+  - Mixed: 187.
+  - Advanced: 19.
+
+Repeated title note:
+
+The repeated titles are not duplicate rows. They represent different organizations or certificate types, so they should stay in the dataset for analysis:
+
+- `Developing Your Musicianship`
+- `Machine Learning`
+- `Marketing Digital`
 
 What this phase teaches:
 
