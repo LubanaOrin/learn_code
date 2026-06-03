@@ -25,9 +25,9 @@ cells = [
 
         ## Context and Project Goal
 
-        The dataset comes from a cardiovascular study. My goal is to build an interpretable logistic regression model that estimates whether a patient is at risk of developing coronary heart disease (CHD) within 10 years.
+        The dataset comes from a cardiovascular study. The goal is to build an interpretable logistic regression model that estimates whether a patient is at risk of developing coronary heart disease (CHD) within 10 years.
 
-        I keep the same overall structure as the hands-on modeling task: preprocessing review, exploratory analysis, feature selection, logistic regression modeling, metric interpretation, threshold optimization, coefficient interpretation, and final recommendations.
+        The notebook follows the same overall structure as the hands-on modeling task: preprocessing review, exploratory analysis, feature selection, logistic regression modeling, metric interpretation, threshold optimization, coefficient interpretation, and final recommendations.
 
         The main upgrade is workflow quality. The notebook is self-contained for review, so the evaluator can see the full path from raw data to model interpretation in one place.
         """
@@ -83,7 +83,7 @@ cells = [
         """
         ## Data Preprocessing
 
-        I keep the cleaning code in this notebook so the full workflow is easy to review from one place.
+        The cleaning code is included in this notebook so the full workflow is easy to review from one place.
 
         The cleaning step standardizes column names, standardizes categorical values, validates core assumptions, and adds deterministic features:
 
@@ -98,7 +98,7 @@ cells = [
         - `log_cigs_per_day`
         - `log_glucose`
 
-        I intentionally leave missing numeric values as missing in the cleaned CSV. Imputation and scaling happen later inside the scikit-learn model pipeline, which prevents train/test leakage.
+        Missing numeric values are intentionally left as missing in the cleaned CSV. Imputation and scaling happen later inside the scikit-learn model pipeline, which prevents train/test leakage.
         """
     ),
     code(
@@ -177,7 +177,6 @@ cells = [
         df = prepare_data()
 
         print(f"Dataset size: {df.shape[0]:,} rows and {df.shape[1]:,} columns")
-        display(df.head())
         """
     ),
     code(
@@ -199,22 +198,77 @@ cells = [
         )
         target_summary["share"] = target_summary["rows"] / len(df)
 
-        print("Missing values retained for model-pipeline imputation:")
-        display(missing_summary)
-        print("Target balance:")
-        display(target_summary)
+        data_quality_table = (
+            missing_summary
+            .reset_index(names="feature")
+            .assign(missing_rate=lambda data: data["missing_rate"].map(lambda value: f"{value:.1%}"))
+        )
+
+        target_table = (
+            target_summary
+            .reset_index(names="target_class")
+            .assign(share=lambda data: data["share"].map(lambda value: f"{value:.1%}"))
+        )
+
+        fig = go.Figure(
+            data=[
+                go.Table(
+                    header=dict(
+                        values=["Feature", "Missing rows", "Missing rate"],
+                        fill_color="#1f2937",
+                        font=dict(color="white"),
+                        align="left",
+                    ),
+                    cells=dict(
+                        values=[
+                            data_quality_table["feature"],
+                            data_quality_table["missing_rows"],
+                            data_quality_table["missing_rate"],
+                        ],
+                        align="left",
+                    ),
+                )
+            ]
+        )
+        fig.update_layout(title="Interactive Missing-Value Summary", height=360)
+        fig.write_html(CHART_DIR / "interactive_missing_value_summary.html")
+        fig.show()
+
+        fig = go.Figure(
+            data=[
+                go.Table(
+                    header=dict(
+                        values=["Target class", "Rows", "Share"],
+                        fill_color="#1f2937",
+                        font=dict(color="white"),
+                        align="left",
+                    ),
+                    cells=dict(
+                        values=[
+                            target_table["target_class"],
+                            target_table["rows"],
+                            target_table["share"],
+                        ],
+                        align="left",
+                    ),
+                )
+            ]
+        )
+        fig.update_layout(title="Interactive Target-Balance Summary", height=260)
+        fig.write_html(CHART_DIR / "interactive_target_balance_summary.html")
+        fig.show()
         """
     ),
     md(
         """
-        The target is imbalanced: only about 15% of patients have a recorded 10-year CHD event. This is the central modeling issue. A model can look accurate by predicting "no CHD" too often, so accuracy alone is not a serious enough metric for this problem.
+        The dataset contains 3,390 patients, and 511 of them have a recorded 10-year CHD event, a positive rate of 15.1%. This imbalance makes plain accuracy misleading: a model can look strong by over-predicting the 84.9% majority class, so evaluation must focus on how well the model identifies the minority CHD-risk group.
         """
     ),
     md(
         """
         ## Exploratory Data Analysis
 
-        I use the EDA to answer one practical question: which risk patterns are strong enough to justify including them in an interpretable model? I focus on age, blood pressure, smoking intensity, glucose, cholesterol, and sex because these are understandable to both technical and non-technical reviewers.
+        Exploratory analysis focuses on risk patterns that are strong enough to justify inclusion in an interpretable model. Age, blood pressure, smoking intensity, glucose, cholesterol, and sex are emphasized because they are clinically meaningful and explainable to both technical and non-technical reviewers.
         """
     ),
     code(
@@ -231,53 +285,70 @@ cells = [
         risk_by_bp = summarize_chd_rate("bp_stage")
         risk_by_smoking = summarize_chd_rate("smoking_intensity")
 
-        display(risk_by_group)
-        display(risk_by_bp)
-        display(risk_by_smoking)
+        risk_summary = pd.concat(
+            [
+                risk_by_group.rename(columns={"age_group": "segment"}).assign(category="Age group"),
+                risk_by_bp.rename(columns={"bp_stage": "segment"}).assign(category="Blood pressure stage"),
+                risk_by_smoking.rename(columns={"smoking_intensity": "segment"}).assign(category="Smoking intensity"),
+            ],
+            ignore_index=True,
+        )
+        risk_summary["chd_rate_label"] = risk_summary["chd_rate"].map(lambda value: f"{value:.1%}")
+
+        fig = go.Figure(
+            data=[
+                go.Table(
+                    header=dict(
+                        values=["Category", "Segment", "Patients", "CHD rate"],
+                        fill_color="#1f2937",
+                        font=dict(color="white"),
+                        align="left",
+                    ),
+                    cells=dict(
+                        values=[
+                            risk_summary["category"],
+                            risk_summary["segment"],
+                            risk_summary["patients"],
+                            risk_summary["chd_rate_label"],
+                        ],
+                        align="left",
+                    ),
+                )
+            ]
+        )
+        fig.update_layout(title="Interactive CHD Rate Summary by Segment", height=520)
+        fig.write_html(CHART_DIR / "interactive_chd_rate_summary.html")
+        fig.show()
         """
     ),
     code(
         """
-        fig, axes = plt.subplots(1, 3, figsize=(18, 5))
-
-        def plot_rate_bar(ax, data, x_column, title, xlabel, color, show_ylabel=False):
-            sns.barplot(data=data, x=x_column, y="chd_rate", ax=ax, color=color)
-            ax.set_title(title)
-            ax.set_xlabel(xlabel)
-            ax.set_ylabel("10-year CHD rate" if show_ylabel else "")
-            ax.tick_params(axis="x", rotation=20)
-            ax.yaxis.set_major_formatter(lambda x, pos: f"{x:.0%}")
-
-
-        plot_rate_bar(
-            axes[0],
-            risk_by_group,
-            "age_group",
-            "CHD Rate by Age Group",
-            "Age group",
-            "#2563eb",
-            show_ylabel=True,
+        fig = px.bar(
+            risk_summary,
+            x="segment",
+            y="chd_rate",
+            color="category",
+            facet_col="category",
+            text="chd_rate_label",
+            title="10-Year CHD Rate by Age, Blood Pressure, and Smoking Segments",
+            labels={
+                "segment": "",
+                "chd_rate": "10-year CHD rate",
+                "category": "Segment type",
+            },
+            color_discrete_sequence=["#2563eb", "#16a34a", "#f59e0b"],
         )
-        plot_rate_bar(
-            axes[1],
-            risk_by_bp,
-            "bp_stage",
-            "CHD Rate by Systolic BP Stage",
-            "Blood pressure stage",
-            "#16a34a",
-        )
-        plot_rate_bar(
-            axes[2],
-            risk_by_smoking,
-            "smoking_intensity",
-            "CHD Rate by Smoking Intensity",
-            "Smoking intensity",
-            "#f59e0b",
-        )
-
-        plt.tight_layout()
-        fig.savefig(CHART_DIR / "risk_rates_by_key_groups.png", dpi=160, bbox_inches="tight")
-        plt.show()
+        fig.update_yaxes(tickformat=".0%")
+        fig.update_xaxes(tickangle=25)
+        fig.update_traces(textposition="outside", cliponaxis=False)
+        fig.update_layout(template="plotly_white", height=520, showlegend=False)
+        fig.write_html(CHART_DIR / "interactive_chd_rates_by_key_groups.html")
+        fig.show()
+        """
+    ),
+    md(
+        """
+        CHD risk rises sharply with age: the 60+ group has a substantially higher event rate than patients under 40. Blood pressure also shows a clinically useful gradient, with Stage 2 systolic BP carrying higher observed risk than normal BP; smoking intensity adds another behavioral signal, especially for heavier smoking segments.
         """
     ),
     code(
@@ -297,26 +368,29 @@ cells = [
 
         corr = df[correlation_features].corr(numeric_only=True)
 
-        fig, ax = plt.subplots(figsize=(10, 7))
-        sns.heatmap(corr, annot=True, fmt=".2f", cmap="vlag", center=0, linewidths=0.5, ax=ax)
-        ax.set_title("Correlation Map for Clinical and Engineered Features")
-        plt.tight_layout()
-        fig.savefig(CHART_DIR / "clinical_feature_correlation_heatmap.png", dpi=160, bbox_inches="tight")
-        plt.show()
+        fig = px.imshow(
+            corr,
+            text_auto=".2f",
+            color_continuous_scale="RdBu_r",
+            zmin=-1,
+            zmax=1,
+            title="Interactive Correlation Map for Clinical and Engineered Features",
+        )
+        fig.update_layout(template="plotly_white", height=720)
+        fig.write_html(CHART_DIR / "interactive_clinical_feature_correlation_heatmap.html")
+        fig.show()
         """
     ),
     md(
         """
-        The EDA points toward a model that should include age, sex, smoking behavior, blood pressure, cholesterol, glucose, diabetes, prior cardiovascular history, and body composition. I also avoid putting every correlated blood-pressure variant into the model. `systolic_bp` and `pulse_pressure` give an interpretable view of pressure level and pressure spread without also adding `diastolic_bp` and `mean_arterial_pressure` into the final model.
-
-        This is a deliberate tradeoff: the model should be accurate enough to be useful, but still simple enough that I can explain the variables and coefficients clearly in a 10-15 minute presentation.
+        The correlation view supports a compact feature set rather than adding every related measurement. `systolic_bp` is retained as the main blood-pressure level feature, while `pulse_pressure` captures pressure spread; adding `diastolic_bp` and `mean_arterial_pressure` as well would make the model harder to explain without adding clearly distinct information.
         """
     ),
     md(
         """
         ## Model Preparation
 
-        I use logistic regression because the task asks for it and because it is interpretable: coefficients can be translated into odds ratios.
+        Logistic regression is used because it is required by the assignment and remains interpretable: coefficients can be translated into odds ratios.
 
         Variable selection is based on three criteria:
 
@@ -382,7 +456,7 @@ cells = [
         """
         ## Logistic Regression Model
 
-        The model is tuned with stratified 5-fold cross-validation. I optimize average precision during tuning because it focuses on how well the model ranks the minority positive class in an imbalanced dataset.
+        The model is tuned with stratified 5-fold cross-validation. Average precision is used during tuning because it evaluates how well the model ranks the minority positive class in an imbalanced dataset.
         """
     ),
     code(
@@ -443,11 +517,11 @@ cells = [
         """
         ## Metric Choice and Optimal Threshold
 
-        For this problem, recall matters more than raw accuracy because missing a high-risk CHD patient is more harmful than sending a lower-risk patient for follow-up. However, precision still matters because a screening process with too many false positives becomes noisy and expensive.
+        For this problem, recall matters more than raw accuracy because missing a high-risk CHD patient is more harmful than sending a lower-risk patient for follow-up. Precision still matters because a screening process with too many false positives becomes noisy and expensive.
 
-        I therefore use the F2 score to choose the classification threshold. F2 weights recall more heavily than precision, which fits a preventive healthcare screening context.
+        F2 is therefore used to choose the classification threshold. F2 weights recall more heavily than precision, which fits a preventive healthcare screening context.
 
-        To avoid selecting the threshold on the final test set, I calculate out-of-fold probabilities on the training data, choose the threshold that maximizes F2 there, and only then evaluate that threshold on the untouched test set.
+        To avoid selecting the threshold on the final test set, out-of-fold probabilities are calculated on the training data, the F2-maximizing threshold is selected there, and that threshold is evaluated only once on the untouched test set.
         """
     ),
     code(
@@ -510,7 +584,7 @@ cells = [
         """
         ## Model Performance
 
-        I compare the default `0.50` threshold against the optimized F2 threshold. The optimized threshold should identify more actual CHD cases, while the default threshold should usually make fewer false-positive predictions.
+        The default `0.50` threshold is compared with the optimized F2 threshold. The optimized threshold should identify more actual CHD cases, while the default threshold should usually make fewer false-positive predictions.
         """
     ),
     code(
@@ -550,7 +624,38 @@ cells = [
         print(f"Test ROC-AUC: {roc_auc:.3f}")
         print(f"Test average precision: {average_precision:.3f}")
         print(f"Positive-class baseline rate: {y_test.mean():.3f}")
-        display(performance)
+
+        performance_display = performance.copy()
+        metric_columns = [
+            "threshold",
+            "accuracy",
+            "balanced_accuracy",
+            "precision",
+            "recall",
+            "f2_score",
+            "specificity",
+        ]
+        performance_display[metric_columns] = performance_display[metric_columns].round(3)
+
+        fig = go.Figure(
+            data=[
+                go.Table(
+                    header=dict(
+                        values=[column.replace("_", " ").title() for column in performance_display.columns],
+                        fill_color="#1f2937",
+                        font=dict(color="white"),
+                        align="left",
+                    ),
+                    cells=dict(
+                        values=[performance_display[column] for column in performance_display.columns],
+                        align="left",
+                    ),
+                )
+            ]
+        )
+        fig.update_layout(title="Interactive Threshold Performance Summary", height=320)
+        fig.write_html(CHART_DIR / "interactive_threshold_performance_summary.html")
+        fig.show()
         """
     ),
     code(
@@ -579,7 +684,7 @@ cells = [
     ),
     md(
         """
-        At the optimized threshold, the model catches substantially more actual CHD cases than the default threshold. The tradeoff is a larger number of false positives. For preventive risk screening, I consider this defensible because the model is not diagnosing CHD by itself; it is prioritizing patients who may need closer follow-up.
+        Lowering the threshold from 0.50 to about 0.41 increases true positives from 66 to 83 and reduces false negatives from 36 to 19. The tradeoff is an increase in false positives from 166 to 262, which is acceptable for a screening-oriented model because the output should prioritize follow-up rather than act as a diagnosis.
         """
     ),
     md(
@@ -608,7 +713,34 @@ cells = [
         )
 
         coefficient_table.to_csv(OUTPUT_DIR / "model_coefficients.csv", index=False)
-        display(coefficient_table.head(15))
+
+        coefficient_display = coefficient_table.head(15).copy()
+        coefficient_display["coefficient"] = coefficient_display["coefficient"].round(3)
+        coefficient_display["odds_ratio"] = coefficient_display["odds_ratio"].round(3)
+
+        fig = go.Figure(
+            data=[
+                go.Table(
+                    header=dict(
+                        values=["Feature", "Coefficient", "Odds ratio"],
+                        fill_color="#1f2937",
+                        font=dict(color="white"),
+                        align="left",
+                    ),
+                    cells=dict(
+                        values=[
+                            coefficient_display["feature"],
+                            coefficient_display["coefficient"],
+                            coefficient_display["odds_ratio"],
+                        ],
+                        align="left",
+                    ),
+                )
+            ]
+        )
+        fig.update_layout(title="Interactive Top Coefficients Table", height=520)
+        fig.write_html(CHART_DIR / "interactive_model_coefficients_table.html")
+        fig.show()
         """
     ),
     code(
@@ -640,37 +772,22 @@ cells = [
     ),
     md(
         """
-        The strongest positive signals are age, systolic blood pressure, male sex, smoking exposure, high glucose, hypertension history, and total cholesterol. This matches the clinical intuition from the EDA, which makes the logistic regression useful for explanation, not only prediction.
+        The largest positive coefficients are age, systolic blood pressure, male sex, smoking exposure, high glucose, hypertension history, and total cholesterol. These variables align with the EDA and make the model explainable: the strongest predictors are not hidden technical artifacts but clinically recognizable risk factors.
         """
     ),
     md(
         """
         ## Conclusions and Actionable Insights
 
-        - The dataset is imbalanced, so accuracy is not the right lead metric.
-        - I use F2 for threshold selection because the goal is risk screening and recall is more important than precision.
-        - The optimized threshold is lower than 0.50, which is expected in a screening problem with a minority positive class.
-        - The final model separates risk better than random ranking, with test ROC-AUC and average precision reported above.
-        - The most important risk signals are interpretable: age, systolic blood pressure, male sex, smoking exposure, glucose, hypertension history, and cholesterol.
-        - In a real clinical workflow, this model should not be used as a diagnosis. It is better framed as a triage or follow-up prioritization tool.
+        - The positive class is only 15.1%, so accuracy is not the lead metric; a majority-class model would already appear superficially strong.
+        - The optimized threshold is about 0.41, raising recall from 64.7% to 81.4% and reducing missed CHD cases from 36 to 19 in the test set.
+        - The model is best framed as follow-up prioritization, not diagnosis, because the higher recall comes with 262 false positives at the optimized threshold.
 
         ## Limitations
 
-        - The dataset is observational, so model coefficients should not be interpreted as causal effects.
-        - Some clinically important variables are missing, such as medication history detail, family history, diet, physical activity, and socioeconomic context.
-        - The positive class is small, so threshold choice should be validated on a larger external dataset before operational use.
-        - The model is intentionally logistic regression for assignment interpretability; stronger predictive models could be compared later, but they would need explainability checks.
-
-        ## 10-15 Minute Presentation Flow
-
-        1. Explain the clinical prediction goal and why the target imbalance matters.
-        2. Summarize the cleaning pipeline and engineered features.
-        3. Show EDA patterns for age, blood pressure, and smoking.
-        4. Explain feature selection and transformations.
-        5. Present logistic regression results.
-        6. Defend F2 as the metric and show the optimized threshold tradeoff.
-        7. Interpret coefficients as odds ratios.
-        8. Close with actionable use, limitations, and next validation steps.
+        - The dataset is observational, so coefficients describe association rather than causation.
+        - Only 511 positive CHD cases are available, so the 0.41 threshold should be validated on external data before clinical use.
+        - Important predictors such as family history, diet, exercise, and detailed medication history are unavailable, limiting the model's clinical completeness.
         """
     ),
 ]
