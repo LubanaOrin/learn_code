@@ -29,7 +29,7 @@ cells = [
 
         I keep the same overall structure as the hands-on modeling task: preprocessing review, exploratory analysis, feature selection, logistic regression modeling, metric interpretation, threshold optimization, coefficient interpretation, and final recommendations.
 
-        The main upgrade is workflow quality. Data cleaning is handled in a separate script, so this notebook can focus on analysis, modeling decisions, and how I would explain the model to a reviewer.
+        The main upgrade is workflow quality. The notebook is self-contained for review, while the same cleaning logic is also kept in a small script for reuse.
         """
     ),
     code(
@@ -75,6 +75,7 @@ cells = [
         OUTPUT_DIR = PROJECT_DIR / "outputs"
         CHART_DIR = OUTPUT_DIR / "charts"
         CHART_DIR.mkdir(parents=True, exist_ok=True)
+        RAW_PATH = PROJECT_DIR / "data" / "train.csv"
         CLEANED_PATH = OUTPUT_DIR / "cardiovascular_train_cleaned.csv"
         """
     ),
@@ -82,7 +83,9 @@ cells = [
         """
         ## Data Preprocessing
 
-        I cleaned the raw data in `scripts/data_pipeline.py` before starting the notebook. That script standardizes column names, standardizes categorical values, validates core assumptions, and adds deterministic features:
+        I keep the cleaning code in this notebook so the full workflow is easy to review from one place. The separate `scripts/data_pipeline.py` file contains the same idea for command-line reuse, but this notebook does not depend on it.
+
+        The cleaning step standardizes column names, standardizes categorical values, validates core assumptions, and adds deterministic features:
 
         - `pulse_pressure`
         - `mean_arterial_pressure`
@@ -95,12 +98,83 @@ cells = [
         - `log_cigs_per_day`
         - `log_glucose`
 
-        I intentionally leave missing numeric values as missing in the cleaned CSV. Imputation and scaling happen later inside the scikit-learn pipeline, which prevents train/test leakage.
+        I intentionally leave missing numeric values as missing in the cleaned CSV. Imputation and scaling happen later inside the scikit-learn model pipeline, which prevents train/test leakage.
         """
     ),
     code(
         """
-        df = pd.read_csv(CLEANED_PATH)
+        column_renames = {
+            "cigsPerDay": "cigs_per_day",
+            "BPMeds": "bp_meds",
+            "prevalentStroke": "prevalent_stroke",
+            "prevalentHyp": "prevalent_hyp",
+            "totChol": "total_cholesterol",
+            "sysBP": "systolic_bp",
+            "diaBP": "diastolic_bp",
+            "BMI": "bmi",
+            "heartRate": "heart_rate",
+            "TenYearCHD": "ten_year_chd",
+        }
+
+
+        def threshold_flag(series, threshold):
+            return pd.Series(
+                np.where(series.isna(), np.nan, series >= threshold),
+                index=series.index,
+                dtype="float",
+            )
+
+
+        def prepare_data(raw_path=RAW_PATH, cleaned_path=CLEANED_PATH):
+            cleaned = (
+                pd.read_csv(raw_path)
+                .rename(columns=column_renames)
+                .drop(columns="id")
+            )
+
+            cleaned["sex"] = cleaned["sex"].astype(str).str.strip().str.upper()
+            cleaned["is_smoking"] = cleaned["is_smoking"].astype(str).str.strip().str.title()
+
+            cleaned["pulse_pressure"] = cleaned["systolic_bp"] - cleaned["diastolic_bp"]
+            cleaned["mean_arterial_pressure"] = (
+                cleaned["diastolic_bp"] + cleaned["pulse_pressure"] / 3
+            )
+            cleaned["age_group"] = pd.cut(
+                cleaned["age"],
+                bins=[0, 39, 49, 59, 120],
+                labels=["Under 40", "40-49", "50-59", "60+"],
+            )
+            cleaned["bp_stage"] = pd.cut(
+                cleaned["systolic_bp"],
+                bins=[0, 120, 130, 140, 1000],
+                labels=["Normal", "Elevated", "Stage 1", "Stage 2"],
+                right=False,
+            )
+            cleaned["smoking_intensity"] = pd.cut(
+                cleaned["cigs_per_day"],
+                bins=[-0.1, 0, 10, 20, 1000],
+                labels=["Non-smoker", "Light", "Moderate", "Heavy"],
+            )
+            cleaned["is_heavy_smoker"] = threshold_flag(cleaned["cigs_per_day"], 20)
+            cleaned["has_high_glucose"] = threshold_flag(cleaned["glucose"], 126)
+            cleaned["has_high_cholesterol"] = threshold_flag(
+                cleaned["total_cholesterol"], 240
+            )
+            cleaned["log_cigs_per_day"] = np.log1p(cleaned["cigs_per_day"])
+            cleaned["log_glucose"] = np.log1p(cleaned["glucose"])
+
+            assert set(cleaned["ten_year_chd"].dropna().unique()).issubset({0, 1})
+            assert set(cleaned["sex"].dropna().unique()).issubset({"F", "M"})
+            assert set(cleaned["is_smoking"].dropna().unique()).issubset({"No", "Yes"})
+            assert cleaned["age"].between(18, 100).all()
+            assert (cleaned["pulse_pressure"] > 0).all()
+            assert not cleaned.duplicated().any()
+
+            cleaned.to_csv(cleaned_path, index=False)
+            return cleaned
+
+
+        df = prepare_data()
 
         print(f"Dataset size: {df.shape[0]:,} rows and {df.shape[1]:,} columns")
         display(df.head())

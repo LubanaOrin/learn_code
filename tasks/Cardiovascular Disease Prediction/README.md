@@ -4,23 +4,23 @@ This project analyzes the Cardiovascular Study Dataset and fits a logistic regre
 
 ## Workflow
 
-1. Run the cleaning pipeline:
+The final notebook is self-contained. Open and run:
 
-   ```bash
-   python3 scripts/data_pipeline.py
-   ```
+```text
+notebooks/cardiovascular_disease_prediction.ipynb
+```
 
-2. Open and run:
+It loads the raw `data/train.csv`, performs cleaning and feature engineering, saves `outputs/cardiovascular_train_cleaned.csv`, and then continues into EDA, logistic regression, metric selection, threshold tuning, and coefficient interpretation.
 
-   ```text
-   notebooks/cardiovascular_disease_prediction.ipynb
-   ```
+The reusable command-line version of the cleaning step is also available:
 
-The pipeline saves `outputs/cardiovascular_train_cleaned.csv`. The notebook starts from that cleaned file and focuses on EDA, model creation, metric selection, threshold tuning, coefficient interpretation, and presentation-ready insights.
+```bash
+python3 scripts/data_pipeline.py
+```
 
 ## Review Upgrades Applied
 
-- Cleaning is modularized into a script instead of mixed into the notebook.
+- The notebook is self-contained for grading, and the same cleaning logic is available as a reusable script.
 - Column names and categorical values are standardized.
 - Feature engineering adds interpretable clinical signals such as pulse pressure, blood pressure stage, smoking intensity, high glucose, and high cholesterol flags.
 - Model preprocessing uses a scikit-learn pipeline to avoid leakage.
