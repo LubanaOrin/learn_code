@@ -12,15 +12,9 @@ notebooks/cardiovascular_disease_prediction.ipynb
 
 It loads the raw `data/train.csv`, performs cleaning and feature engineering, saves `outputs/cardiovascular_train_cleaned.csv`, and then continues into EDA, logistic regression, metric selection, threshold tuning, and coefficient interpretation.
 
-The reusable command-line version of the cleaning step is also available:
-
-```bash
-python3 scripts/data_pipeline.py
-```
-
 ## Review Upgrades Applied
 
-- The notebook is self-contained for grading, and the same cleaning logic is available as a reusable script.
+- The notebook is self-contained for grading.
 - Column names and categorical values are standardized.
 - Feature engineering adds interpretable clinical signals such as pulse pressure, blood pressure stage, smoking intensity, high glucose, and high cholesterol flags.
 - Model preprocessing uses a scikit-learn pipeline to avoid leakage.

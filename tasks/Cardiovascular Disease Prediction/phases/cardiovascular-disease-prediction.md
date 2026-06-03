@@ -17,8 +17,7 @@ Analyze the cardiovascular study training dataset and build an interpretable log
 
 This task intentionally applies reviewer feedback from the Spotify and Coursera projects:
 
-- Keep ETL in `scripts/data_pipeline.py`.
-- Keep the notebook focused on analysis and presentation.
+- Keep the notebook self-contained so the full workflow is easy to grade.
 - Use vectorized Pandas operations.
 - Standardize dataframe values, not only column names.
 - Despine charts globally for stronger data-ink ratio.

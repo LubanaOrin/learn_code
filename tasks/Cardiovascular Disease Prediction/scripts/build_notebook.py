@@ -29,7 +29,7 @@ cells = [
 
         I keep the same overall structure as the hands-on modeling task: preprocessing review, exploratory analysis, feature selection, logistic regression modeling, metric interpretation, threshold optimization, coefficient interpretation, and final recommendations.
 
-        The main upgrade is workflow quality. The notebook is self-contained for review, while the same cleaning logic is also kept in a small script for reuse.
+        The main upgrade is workflow quality. The notebook is self-contained for review, so the evaluator can see the full path from raw data to model interpretation in one place.
         """
     ),
     code(
@@ -83,7 +83,7 @@ cells = [
         """
         ## Data Preprocessing
 
-        I keep the cleaning code in this notebook so the full workflow is easy to review from one place. The separate `scripts/data_pipeline.py` file contains the same idea for command-line reuse, but this notebook does not depend on it.
+        I keep the cleaning code in this notebook so the full workflow is easy to review from one place.
 
         The cleaning step standardizes column names, standardizes categorical values, validates core assumptions, and adds deterministic features:
 
