@@ -323,33 +323,52 @@ cells = [
     ),
     code(
         """
-        fig = px.bar(
-            risk_summary.sort_values(["category", "chd_rate"]),
-            x="chd_rate",
-            y="segment",
-            color="category",
-            facet_row="category",
-            text="chd_rate_label",
-            orientation="h",
-            title="10-Year CHD Rate by Age, Blood Pressure, and Smoking Segments",
-            labels={
-                "segment": "",
-                "chd_rate": "10-year CHD rate",
-                "category": "Segment type",
-            },
-            color_discrete_sequence=["#2563eb", "#16a34a", "#f59e0b"],
+        def plot_segment_risk(data, segment_column, title, color, output_name):
+            chart_data = data.copy()
+            chart_data["chd_rate_label"] = chart_data["chd_rate"].map(lambda value: f"{value:.1%}")
+
+            fig = px.bar(
+                chart_data.sort_values("chd_rate"),
+                x="chd_rate",
+                y=segment_column,
+                text="chd_rate_label",
+                orientation="h",
+                title=title,
+                labels={segment_column: "", "chd_rate": "10-year CHD rate"},
+            )
+            fig.update_traces(marker_color=color, textposition="outside", cliponaxis=False)
+            fig.update_xaxes(tickformat=".0%", range=[0, chart_data["chd_rate"].max() * 1.25])
+            fig.update_yaxes(automargin=True)
+            fig.update_layout(
+                template="plotly_white",
+                height=360,
+                margin=dict(l=130, r=90, t=70, b=50),
+            )
+            fig.write_html(CHART_DIR / output_name)
+            fig.show()
+
+
+        plot_segment_risk(
+            risk_by_group,
+            "age_group",
+            "10-Year CHD Rate by Age Group",
+            "#2563eb",
+            "chd_rate_by_age_group.html",
         )
-        fig.update_xaxes(tickformat=".0%", range=[0, risk_summary["chd_rate"].max() * 1.25])
-        fig.update_yaxes(matches=None, automargin=True)
-        fig.update_traces(textposition="outside", cliponaxis=False)
-        fig.update_layout(
-            template="plotly_white",
-            height=720,
-            showlegend=False,
-            margin=dict(l=140, r=80, t=80, b=60),
+        plot_segment_risk(
+            risk_by_bp,
+            "bp_stage",
+            "10-Year CHD Rate by Blood Pressure Stage",
+            "#16a34a",
+            "chd_rate_by_blood_pressure_stage.html",
         )
-        fig.write_html(CHART_DIR / "interactive_chd_rates_by_key_groups.html")
-        fig.show()
+        plot_segment_risk(
+            risk_by_smoking,
+            "smoking_intensity",
+            "10-Year CHD Rate by Smoking Intensity",
+            "#f59e0b",
+            "chd_rate_by_smoking_intensity.html",
+        )
         """
     ),
     md(
