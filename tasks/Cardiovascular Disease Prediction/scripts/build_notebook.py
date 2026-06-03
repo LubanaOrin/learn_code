@@ -230,7 +230,7 @@ cells = [
                 )
             ]
         )
-        fig.update_layout(title="Interactive Missing-Value Summary", height=360)
+        fig.update_layout(title="Missing-Value Summary", height=360)
         fig.write_html(CHART_DIR / "interactive_missing_value_summary.html")
         fig.show()
 
@@ -254,7 +254,7 @@ cells = [
                 )
             ]
         )
-        fig.update_layout(title="Interactive Target-Balance Summary", height=260)
+        fig.update_layout(title="Target-Balance Summary", height=260)
         fig.write_html(CHART_DIR / "interactive_target_balance_summary.html")
         fig.show()
         """
@@ -316,7 +316,7 @@ cells = [
                 )
             ]
         )
-        fig.update_layout(title="Interactive CHD Rate Summary by Segment", height=520)
+        fig.update_layout(title="CHD Rate Summary by Segment", height=520)
         fig.write_html(CHART_DIR / "interactive_chd_rate_summary.html")
         fig.show()
         """
@@ -324,12 +324,13 @@ cells = [
     code(
         """
         fig = px.bar(
-            risk_summary,
-            x="segment",
-            y="chd_rate",
+            risk_summary.sort_values(["category", "chd_rate"]),
+            x="chd_rate",
+            y="segment",
             color="category",
-            facet_col="category",
+            facet_row="category",
             text="chd_rate_label",
+            orientation="h",
             title="10-Year CHD Rate by Age, Blood Pressure, and Smoking Segments",
             labels={
                 "segment": "",
@@ -338,10 +339,15 @@ cells = [
             },
             color_discrete_sequence=["#2563eb", "#16a34a", "#f59e0b"],
         )
-        fig.update_yaxes(tickformat=".0%")
-        fig.update_xaxes(tickangle=25)
+        fig.update_xaxes(tickformat=".0%", range=[0, risk_summary["chd_rate"].max() * 1.25])
+        fig.update_yaxes(matches=None, automargin=True)
         fig.update_traces(textposition="outside", cliponaxis=False)
-        fig.update_layout(template="plotly_white", height=520, showlegend=False)
+        fig.update_layout(
+            template="plotly_white",
+            height=720,
+            showlegend=False,
+            margin=dict(l=140, r=80, t=80, b=60),
+        )
         fig.write_html(CHART_DIR / "interactive_chd_rates_by_key_groups.html")
         fig.show()
         """
@@ -374,7 +380,7 @@ cells = [
             color_continuous_scale="RdBu_r",
             zmin=-1,
             zmax=1,
-            title="Interactive Correlation Map for Clinical and Engineered Features",
+            title="Correlation Map for Clinical and Engineered Features",
         )
         fig.update_layout(template="plotly_white", height=720)
         fig.write_html(CHART_DIR / "interactive_clinical_feature_correlation_heatmap.html")
@@ -570,7 +576,7 @@ cells = [
             )
         fig.add_vline(x=optimal_threshold, line_dash="dash", line_color="#dc2626")
         fig.update_layout(
-            title="Interactive Threshold Tradeoff",
+            title="Threshold Tradeoff",
             xaxis_title="Classification threshold",
             yaxis_title="Score",
             template="plotly_white",
@@ -653,7 +659,7 @@ cells = [
                 )
             ]
         )
-        fig.update_layout(title="Interactive Threshold Performance Summary", height=320)
+        fig.update_layout(title="Threshold Performance Summary", height=320)
         fig.write_html(CHART_DIR / "interactive_threshold_performance_summary.html")
         fig.show()
         """
@@ -738,7 +744,7 @@ cells = [
                 )
             ]
         )
-        fig.update_layout(title="Interactive Top Coefficients Table", height=520)
+        fig.update_layout(title="Top Coefficients Table", height=520)
         fig.write_html(CHART_DIR / "interactive_model_coefficients_table.html")
         fig.show()
         """
