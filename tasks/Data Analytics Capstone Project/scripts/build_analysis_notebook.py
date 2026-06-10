@@ -111,6 +111,7 @@ def build_notebook() -> dict:
             TASK_DIR = Path.cwd().parent if Path.cwd().name == "notebooks" else Path.cwd()
             OUTPUT_DIR = TASK_DIR / "outputs"
             CHART_DIR = OUTPUT_DIR / "charts"
+            REPORT_CHART_DIR = OUTPUT_DIR / "report_chart_assets"
 
             clean_df = pd.read_csv(OUTPUT_DIR / "osmi_mental_health_cleaned.csv")
             quality_df = pd.read_csv(OUTPUT_DIR / "osmi_data_quality_summary.csv")
@@ -151,6 +152,8 @@ def build_notebook() -> dict:
             ## Key Survey Metrics
 
             These values provide the first overview of the sample before deeper analysis.
+
+            ![Treatment-seeking overview](../outputs/report_chart_assets/figure_01_treatment_overview.png)
             """
         ),
         code(
@@ -163,6 +166,8 @@ def build_notebook() -> dict:
             ## Segmentation: Treatment-Seeking By Workplace Support
 
             Segmentation means dividing respondents into groups and comparing outcomes between those groups. Here, the outcome is whether a respondent reported seeking mental health treatment.
+
+            ![Treatment-seeking by benefits and care options](../outputs/report_chart_assets/figure_02_benefits_and_care_options.png)
             """
         ),
         code(
@@ -176,6 +181,8 @@ def build_notebook() -> dict:
             ## Segmentation: Treatment-Seeking By Personal And Work Context
 
             Family history and work interference are important context variables. They should not be interpreted as workplace policies, but they help explain why treatment-seeking may differ between respondents.
+
+            ![Treatment-seeking by work interference](../outputs/report_chart_assets/figure_03_treatment_by_work_interference.png)
             """
         ),
         code(
@@ -214,6 +221,10 @@ def build_notebook() -> dict:
             - Expected mental health consequences and coworker discussion comfort: **p < 0.001**.
 
             Company size was significantly associated with discussion comfort (**p = 0.000238**), but not with leave difficulty at the 0.05 level (**p = 0.065674**).
+
+            ![Supervisor discussion comfort by expected consequences](../outputs/report_chart_assets/figure_04_supervisor_comfort_by_consequence.png)
+
+            ![Treatment-seeking by company size](../outputs/report_chart_assets/figure_05_treatment_by_company_size.png)
             """
         ),
         markdown(
@@ -240,6 +251,8 @@ def build_notebook() -> dict:
 
             The model achieved **ROC AUC = 0.891**, which means it separated treatment-seeking and non-treatment-seeking respondents well on the test data.
 
+            ![Logistic regression model performance](../outputs/report_chart_assets/figure_06_model_performance.png)
+
             The strongest positive model signals included:
 
             - frequent work interference;
@@ -255,7 +268,7 @@ def build_notebook() -> dict:
             """
             ## Dashboard-Ready Chart Outputs
 
-            The analysis script created interactive HTML charts in `outputs/charts/`.
+            The main dashboard-style visuals are now available inside this notebook and in the written report as static PNG chart snippets. The project also keeps supplementary interactive HTML charts in `outputs/charts/` and a standalone HTML dashboard in `outputs/dashboard/`.
 
             Current chart files:
 
@@ -264,7 +277,7 @@ def build_notebook() -> dict:
             - `treatment_by_work_interference.html`
             - `supervisor_comfort_by_consequence.html`
 
-            These charts can support the dashboard, presentation, and written report.
+            These charts support the dashboard, presentation, and written report. For formal submission, the notebook and report should be treated as the primary visual artifacts; the standalone HTML dashboard is supplementary.
             """
         ),
         code(

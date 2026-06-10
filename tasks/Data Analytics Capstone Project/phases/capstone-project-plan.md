@@ -345,10 +345,14 @@ Progress:
 - Created upload-ready report files:
   - `outputs/osmi_mental_health_written_report_upload_ready.docx`
   - `outputs/osmi_mental_health_written_report_upload_ready.pdf`
-- Rendered the report PDF into 7 PNG pages and visually checked the report layout.
+- Created static chart snippets for notebook and report:
+  - `outputs/report_chart_assets/`
+- Embedded six chart snippets in the written report.
+- Added the six chart snippets to the analysis notebook as dashboard-style visuals.
+- Rendered the updated report PDF into 10 PNG pages and visually checked the chart-embedded report layout.
 - Created submission guide:
   - `notes/submission-guide.md`
-- Created verified submission package:
+- Rebuilt verified submission package with chart assets and preserved folder paths:
   - `outputs/data_analytics_capstone_submission_package.zip`
 - Checked the capstone against the assignment requirements.
 - Confirmed the current project is reproducible with Python scripts and saved CSV files.

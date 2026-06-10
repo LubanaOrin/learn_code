@@ -18,7 +18,7 @@
 | Explain targeted audience | Ready | Written report and `notes/research-design.md` |
 | State problem and hypothesis | Ready | Written report and notebook |
 | Use at least three learned techniques | Ready | Segmentation, hypothesis testing, logistic regression/classification |
-| Dashboard is accessible | Ready | `outputs/dashboard/osmi_mental_health_dashboard.html` opens as a standalone HTML file |
+| Dashboard / visual artifact is accessible | Ready | Notebook and report contain static chart snippets; supplementary HTML dashboard is saved in `outputs/dashboard/` |
 | Presentation is 10-15 minutes with speaker notes | Ready | 11-slide PPTX and separate speaker-notes Markdown file |
 | Written report exists | Draft ready | Markdown report draft saved; still needs transfer to Google Docs if required for submission |
 | Results are consistent across deliverables | Ready | Same figures used in notebook, dashboard, report, and presentation |
@@ -80,7 +80,8 @@ Key performance:
 - SQL notes: `sql/README.md`
 - Cleaned dataset: `outputs/osmi_mental_health_cleaned.csv`
 - Notebook: `notebooks/osmi_mental_health_analysis.ipynb`
-- Dashboard: `outputs/dashboard/osmi_mental_health_dashboard.html`
+- Report chart assets: `outputs/report_chart_assets/`
+- Supplementary HTML dashboard: `outputs/dashboard/osmi_mental_health_dashboard.html`
 - Written report draft: `outputs/osmi_mental_health_written_report_draft.md`
 - Upload-ready report DOCX: `outputs/osmi_mental_health_written_report_upload_ready.docx`
 - Report PDF preview: `outputs/osmi_mental_health_written_report_upload_ready.pdf`
@@ -96,8 +97,10 @@ Key performance:
 
 - Cleaned dataset has 1,259 rows and 56 columns.
 - Notebook has 25 cells, including 17 markdown cells and 8 code cells.
+- Notebook contains six static chart references for dashboard-style visual review.
 - All notebook code cells were tested successfully.
-- Dashboard was rebuilt with embedded Plotly JavaScript for standalone access.
+- Report includes six embedded chart snippets from `outputs/report_chart_assets/`.
+- Supplementary HTML dashboard was rebuilt with embedded Plotly JavaScript for standalone access.
 - Written report DOCX was exported from Markdown and visually checked through a 7-page PDF render.
 - PPTX archive integrity check passed with no compressed-data errors.
 - Presentation package contains 11 slides and 11 matching notes sections.

@@ -36,7 +36,8 @@ What workplace and personal factors are associated with mental health treatment-
 ## Main Deliverables
 
 - Analysis notebook: `notebooks/osmi_mental_health_analysis.ipynb`
-- Dashboard: `outputs/dashboard/osmi_mental_health_dashboard.html`
+- Report chart assets: `outputs/report_chart_assets/`
+- Supplementary HTML dashboard: `outputs/dashboard/osmi_mental_health_dashboard.html`
 - Written report draft: `outputs/osmi_mental_health_written_report_draft.md`
 - Upload-ready report DOCX: `outputs/osmi_mental_health_written_report_upload_ready.docx`
 - Report PDF preview: `outputs/osmi_mental_health_written_report_upload_ready.pdf`
@@ -53,6 +54,7 @@ Run the scripts in this order from the project folder:
 ```bash
 python3 scripts/prepare_osmi_dataset.py
 python3 scripts/analyze_osmi_dataset.py
+python3 scripts/build_report_charts.py
 python3 scripts/build_analysis_notebook.py
 python3 scripts/build_dashboard.py
 python3 scripts/build_presentation.py

@@ -4,16 +4,17 @@
 
 Use these files for submission:
 
-- Dashboard: `outputs/dashboard/osmi_mental_health_dashboard.html`
+- Analysis notebook with chart snippets: `notebooks/osmi_mental_health_analysis.ipynb`
+- Report chart assets: `outputs/report_chart_assets/`
+- Supplementary HTML dashboard: `outputs/dashboard/osmi_mental_health_dashboard.html`
 - Written report DOCX: `outputs/osmi_mental_health_written_report_upload_ready.docx`
 - Written report PDF preview: `outputs/osmi_mental_health_written_report_upload_ready.pdf`
 - Presentation PPTX: `outputs/presentation/osmi_mental_health_capstone_presentation.pptx`
 - Presentation PDF preview: `outputs/presentation/osmi_mental_health_capstone_presentation.pdf`
 - Speaker notes: `outputs/presentation/osmi_mental_health_speaker_notes.md`
-- Analysis notebook: `notebooks/osmi_mental_health_analysis.ipynb`
 - Full submission package: `outputs/data_analytics_capstone_submission_package.zip`
 
-The ZIP package contains the report DOCX/PDF, dashboard HTML, presentation PPTX/PDF, speaker notes, notebook, README, submission guide, and final review checklist.
+The ZIP package contains the report DOCX/PDF, chart assets, supplementary dashboard HTML, presentation PPTX/PDF, speaker notes, notebook, README, submission guide, and final review checklist.
 
 ## Google Docs Report
 
@@ -44,13 +45,23 @@ The PPTX was checked by exporting it to an 11-page PDF and rendering all 11 slid
 
 ## Dashboard
 
-The dashboard is a standalone HTML file:
+The primary dashboard-style visual artifact is the notebook:
+
+- `notebooks/osmi_mental_health_analysis.ipynb`
+
+The written report also contains all six key chart snippets from:
+
+- `outputs/report_chart_assets/`
+
+The standalone HTML dashboard is supplementary:
 
 - `outputs/dashboard/osmi_mental_health_dashboard.html`
 
 It contains embedded Plotly JavaScript, so it can be opened directly in a browser without a separate server.
 
-If the platform accepts file uploads, upload the HTML file directly.
+If the platform accepts notebook uploads, upload the `.ipynb` file as the main analysis/dashboard artifact.
+
+If the platform accepts file uploads, upload the HTML dashboard only as a supplementary visual file.
 
 If the platform requires a public link, possible options are:
 
@@ -69,6 +80,7 @@ This capstone analyzes the OSMI Mental Health in Tech Survey to study treatment-
 - `notes/final-review-checklist.md`
 - `outputs/osmi_mental_health_written_report_upload_ready.docx`
 - `outputs/osmi_mental_health_written_report_upload_ready.pdf`
+- `outputs/report_chart_assets/`
 - `outputs/dashboard/osmi_mental_health_dashboard.html`
 - `outputs/presentation/osmi_mental_health_capstone_presentation.pptx`
 - `outputs/presentation/osmi_mental_health_capstone_presentation.pdf`

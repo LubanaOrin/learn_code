@@ -97,6 +97,8 @@ Workplace disclosure comfort was lower. 516 respondents, or 41.0%, were comforta
 
 This suggests a gap between private treatment-seeking and workplace openness.
 
+![Figure 1. Mental health treatment-seeking overview.](report_chart_assets/figure_01_treatment_overview.png)
+
 ### Workplace Benefits And Treatment-Seeking
 
 Respondents who knew their employer provided mental health benefits had a treatment-seeking rate of 63.9%. Respondents whose employer did not provide benefits had a treatment-seeking rate of 48.4%. Respondents who did not know whether benefits existed had a treatment-seeking rate of 37.0%.
@@ -107,6 +109,8 @@ The chi-square test showed a statistically significant association between benef
 - p-value < 0.001
 
 This supports H1.
+
+![Figure 2. Treatment-seeking by benefits awareness and care-option awareness.](report_chart_assets/figure_02_benefits_and_care_options.png)
 
 ### Care Options And Treatment-Seeking
 
@@ -143,6 +147,8 @@ The chi-square test showed a statistically significant association between work 
 
 This supports H3.
 
+![Figure 3. Treatment-seeking rate by reported work interference.](report_chart_assets/figure_03_treatment_by_work_interference.png)
+
 ### Perceived Consequences And Disclosure Comfort
 
 Expected negative workplace consequences were strongly associated with discussion comfort.
@@ -159,6 +165,8 @@ For coworker discussion comfort:
 
 This supports H2.
 
+![Figure 4. Supervisor discussion comfort by expected mental health consequences.](report_chart_assets/figure_04_supervisor_comfort_by_consequence.png)
+
 ### Company Size
 
 Discussion comfort differed across company-size groups:
@@ -172,6 +180,8 @@ Leave difficulty did not show a statistically significant difference across comp
 - p-value = 0.065674
 
 This partially supports H4.
+
+![Figure 5. Treatment-seeking rate by company size.](report_chart_assets/figure_05_treatment_by_company_size.png)
 
 ## Logistic Regression Model
 
@@ -199,9 +209,11 @@ The strongest positive model signals included:
 
 The model confirms that work interference, personal context, and workplace support variables are strongly associated with treatment-seeking. However, the model should not be interpreted causally.
 
-## Dashboard Summary
+![Figure 6. Logistic regression model performance.](report_chart_assets/figure_06_model_performance.png)
 
-The dashboard presents the same story visually. It includes:
+## Dashboard And Notebook Summary
+
+The visual dashboard story is presented in the notebook and written report using the same chart snippets. A supplementary standalone HTML dashboard is also saved in the project folder. Together, these visual artifacts include:
 
 - treatment-seeking overview
 - treatment rate by employer benefits
@@ -211,7 +223,11 @@ The dashboard presents the same story visually. It includes:
 - hypothesis-test table
 - logistic regression model summary
 
-The dashboard file is saved as:
+The main notebook file is saved as:
+
+`notebooks/osmi_mental_health_analysis.ipynb`
+
+The supplementary standalone HTML dashboard file is saved as:
 
 `outputs/dashboard/osmi_mental_health_dashboard.html`
 
