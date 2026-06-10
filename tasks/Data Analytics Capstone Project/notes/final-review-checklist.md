@@ -18,7 +18,7 @@
 | Explain targeted audience | Ready | Written report and `notes/research-design.md` |
 | State problem and hypothesis | Ready | Written report and notebook |
 | Use at least three learned techniques | Ready | Segmentation, hypothesis testing, logistic regression/classification |
-| Dashboard / visual artifact is accessible | Ready | Notebook and report contain static chart snippets; supplementary HTML dashboard is saved in `outputs/dashboard/` |
+| Dashboard is accessible | Ready | Google Sheets-ready XLSX dashboard is saved in `outputs/google_sheets_dashboard/` |
 | Presentation is 10-15 minutes with speaker notes | Ready | 11-slide PPTX and separate speaker-notes Markdown file |
 | Written report exists | Draft ready | Markdown report draft saved; still needs transfer to Google Docs if required for submission |
 | Results are consistent across deliverables | Ready | Same figures used in notebook, dashboard, report, and presentation |
@@ -81,6 +81,7 @@ Key performance:
 - Cleaned dataset: `outputs/osmi_mental_health_cleaned.csv`
 - Notebook: `notebooks/osmi_mental_health_analysis.ipynb`
 - Report chart assets: `outputs/report_chart_assets/`
+- Google Sheets-ready dashboard workbook: `outputs/google_sheets_dashboard/osmi_mental_health_google_sheets_dashboard.xlsx`
 - Supplementary HTML dashboard: `outputs/dashboard/osmi_mental_health_dashboard.html`
 - Written report draft: `outputs/osmi_mental_health_written_report_draft.md`
 - Upload-ready report DOCX: `outputs/osmi_mental_health_written_report_upload_ready.docx`
@@ -100,6 +101,7 @@ Key performance:
 - Notebook contains six static chart references for dashboard-style visual review.
 - All notebook code cells were tested successfully.
 - Report includes six embedded chart snippets from `outputs/report_chart_assets/`.
+- Google Sheets-ready dashboard workbook contains 5 sheets and 8 native charts, including 3 charts on the Dashboard sheet.
 - Supplementary HTML dashboard was rebuilt with embedded Plotly JavaScript for standalone access.
 - Written report DOCX was exported from Markdown and visually checked through a 7-page PDF render.
 - PPTX archive integrity check passed with no compressed-data errors.
