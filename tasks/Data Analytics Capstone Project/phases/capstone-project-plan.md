@@ -351,7 +351,8 @@ Progress:
 - Added the six chart snippets to the analysis notebook as dashboard-style visuals.
 - Created a Google Sheets-ready dashboard workbook for the required dashboard deliverable:
   - `outputs/google_sheets_dashboard/osmi_mental_health_google_sheets_dashboard.xlsx`
-- Verified the workbook archive and confirmed it contains 5 sheets and 8 native charts.
+- Verified the workbook archive and confirmed it contains 6 sheets and 6 embedded chart images.
+- Exported the dashboard workbook to PDF and visually checked the main Dashboard page after redesign.
 - Rendered the updated report PDF into 10 PNG pages and visually checked the chart-embedded report layout.
 - Created submission guide:
   - `notes/submission-guide.md`

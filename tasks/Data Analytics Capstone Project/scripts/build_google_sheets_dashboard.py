@@ -1,9 +1,9 @@
-"""Build a Google Sheets-ready dashboard workbook for the capstone.
+"""Build a clean Google Sheets-ready dashboard workbook.
 
-The college requires a dashboard in a tool such as Tableau, Google Sheets, or
-Power BI. This script creates an XLSX workbook with dashboard sheets, summary
-tables, and native charts that can be uploaded to Google Drive and opened as a
-Google Sheets dashboard.
+The college requires a dashboard in a tool such as Google Sheets, Tableau, or
+Power BI. This workbook is designed for Google Sheets upload: the dashboard uses
+stable KPI blocks and embedded chart images so it does not depend on fragile
+Excel chart rendering after conversion.
 """
 
 from __future__ import annotations
@@ -12,13 +12,14 @@ from pathlib import Path
 
 import pandas as pd
 from openpyxl import Workbook
-from openpyxl.chart import BarChart, Reference
+from openpyxl.drawing.image import Image
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
 
 TASK_DIR = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = TASK_DIR / "outputs"
+ASSET_DIR = OUTPUT_DIR / "report_chart_assets"
 DASHBOARD_DIR = OUTPUT_DIR / "google_sheets_dashboard"
 WORKBOOK_PATH = DASHBOARD_DIR / "osmi_mental_health_google_sheets_dashboard.xlsx"
 
@@ -29,88 +30,103 @@ RED = "C25746"
 GOLD = "D39B5F"
 VIOLET = "6D4C7D"
 LIGHT = "F6F7F9"
+PALE = "EEF4F4"
 LINE = "D8DEE6"
 WHITE = "FFFFFF"
 
 
-def pct(value: float) -> float:
-    return round(float(value), 1)
+def set_sheet_defaults(ws) -> None:
+    ws.sheet_view.showGridLines = False
+    for col in range(1, 15):
+        ws.column_dimensions[get_column_letter(col)].width = 12
+    for row in range(1, 80):
+        ws.row_dimensions[row].height = 24
 
 
-def style_title(cell, size: int = 20, color: str = INK) -> None:
-    cell.font = Font(name="Aptos Display", bold=True, size=size, color=color)
-    cell.alignment = Alignment(vertical="center", wrap_text=True)
+def style_range_border(ws, start_row: int, start_col: int, end_row: int, end_col: int) -> None:
+    border = Border(
+        left=Side(style="thin", color=LINE),
+        right=Side(style="thin", color=LINE),
+        top=Side(style="thin", color=LINE),
+        bottom=Side(style="thin", color=LINE),
+    )
+    for row in range(start_row, end_row + 1):
+        for col in range(start_col, end_col + 1):
+            ws.cell(row=row, column=col).border = border
 
 
-def style_header_row(ws, row: int, start_col: int, end_col: int) -> None:
-    fill = PatternFill("solid", fgColor=INK)
-    font = Font(name="Aptos", bold=True, color=WHITE)
-    for col in range(start_col, end_col + 1):
-        cell = ws.cell(row=row, column=col)
-        cell.fill = fill
-        cell.font = font
+def merge_and_write(
+    ws,
+    cell_range: str,
+    value: str,
+    *,
+    size: int = 11,
+    bold: bool = False,
+    color: str = INK,
+    fill: str | None = None,
+    align: str = "left",
+    valign: str = "center",
+) -> None:
+    ws.merge_cells(cell_range)
+    cell = ws[cell_range.split(":")[0]]
+    cell.value = value
+    cell.font = Font(name="Aptos", size=size, bold=bold, color=color)
+    cell.alignment = Alignment(horizontal=align, vertical=valign, wrap_text=True)
+    if fill:
+        cell.fill = PatternFill("solid", fgColor=fill)
+    start, end = cell_range.split(":")
+    start_col = ws[start].column
+    start_row = ws[start].row
+    end_col = ws[end].column
+    end_row = ws[end].row
+    style_range_border(ws, start_row, start_col, end_row, end_col)
+
+
+def add_kpi(ws, cell_range: str, label: str, value: str, accent: str) -> None:
+    start, end = cell_range.split(":")
+    ws.merge_cells(cell_range)
+    cell = ws[start]
+    cell.value = f"{label}\n{value}"
+    cell.font = Font(name="Aptos", size=13, bold=True, color=accent)
+    cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+    cell.fill = PatternFill("solid", fgColor=WHITE)
+    start_col = ws[start].column
+    start_row = ws[start].row
+    end_col = ws[end].column
+    end_row = ws[end].row
+    style_range_border(ws, start_row, start_col, end_row, end_col)
+
+
+def add_image(ws, image_path: Path, anchor: str, width: int) -> None:
+    img = Image(str(image_path))
+    scale = width / img.width
+    img.width = width
+    img.height = int(img.height * scale)
+    ws.add_image(img, anchor)
+
+
+def write_df(ws, df: pd.DataFrame, start_row: int, start_col: int) -> None:
+    header_fill = PatternFill("solid", fgColor=INK)
+    header_font = Font(name="Aptos", bold=True, color=WHITE)
+    body_font = Font(name="Aptos", color=INK)
+    for j, col in enumerate(df.columns, start=start_col):
+        cell = ws.cell(row=start_row, column=j, value=col)
+        cell.fill = header_fill
+        cell.font = header_font
         cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
-        cell.border = Border(bottom=Side(style="thin", color=LINE))
-
-
-def write_df(ws, df: pd.DataFrame, start_row: int, start_col: int) -> tuple[int, int]:
-    for j, col_name in enumerate(df.columns, start=start_col):
-        ws.cell(row=start_row, column=j, value=col_name)
-    style_header_row(ws, start_row, start_col, start_col + len(df.columns) - 1)
-
     for i, row in enumerate(df.itertuples(index=False), start=start_row + 1):
         for j, value in enumerate(row, start=start_col):
             if pd.isna(value):
                 value = None
-            ws.cell(row=i, column=j, value=value)
-
+            cell = ws.cell(row=i, column=j, value=value)
+            cell.font = body_font
+            cell.alignment = Alignment(vertical="center", wrap_text=True)
     end_row = start_row + len(df)
     end_col = start_col + len(df.columns) - 1
+    style_range_border(ws, start_row, start_col, end_row, end_col)
     for col in range(start_col, end_col + 1):
-        ws.column_dimensions[get_column_letter(col)].width = min(
-            28, max(12, max(len(str(ws.cell(row=r, column=col).value or "")) for r in range(start_row, end_row + 1)) + 2)
-        )
-    return end_row, end_col
-
-
-def make_bar_chart(
-    ws,
-    title: str,
-    data_min_col: int,
-    data_min_row: int,
-    data_max_row: int,
-    cat_col: int,
-    anchor: str,
-    y_axis_title: str = "Treatment rate (%)",
-    height: float = 7.0,
-    width: float = 11.0,
-) -> BarChart:
-    chart = BarChart()
-    chart.type = "col"
-    chart.style = 10
-    chart.title = title
-    chart.y_axis.title = y_axis_title
-    chart.x_axis.title = ""
-    chart.height = height
-    chart.width = width
-    data = Reference(ws, min_col=data_min_col, min_row=data_min_row, max_row=data_max_row)
-    cats = Reference(ws, min_col=cat_col, min_row=data_min_row + 1, max_row=data_max_row)
-    chart.add_data(data, titles_from_data=True)
-    chart.set_categories(cats)
-    chart.legend = None
-    if anchor:
-        ws.add_chart(chart, anchor)
-    return chart
-
-
-def setup_sheet(ws, title: str) -> None:
-    ws.sheet_view.showGridLines = False
-    ws.freeze_panes = "A4"
-    ws["A1"] = title
-    style_title(ws["A1"], 18)
-    ws["A2"] = "OSMI Mental Health in Tech Survey | Data Analytics Capstone Project"
-    ws["A2"].font = Font(name="Aptos", size=11, color=MUTED)
-    ws.row_dimensions[1].height = 28
+        max_len = max(len(str(ws.cell(row=r, column=col).value or "")) for r in range(start_row, end_row + 1))
+        ws.column_dimensions[get_column_letter(col)].width = min(max(max_len + 2, 12), 34)
 
 
 def build_workbook() -> None:
@@ -129,156 +145,142 @@ def build_workbook() -> None:
     wb = Workbook()
     dashboard = wb.active
     dashboard.title = "Dashboard"
-    data_ws = wb.create_sheet("Dashboard_Data")
+    extra_charts = wb.create_sheet("Additional_Charts")
+    source = wb.create_sheet("Source_Tables")
     tests_ws = wb.create_sheet("Hypothesis_Tests")
     model_ws = wb.create_sheet("Model")
-    readme_ws = wb.create_sheet("README")
-
-    for ws in [dashboard, data_ws, tests_ws, model_ws, readme_ws]:
-        ws.sheet_view.showGridLines = False
-
-    setup_sheet(dashboard, "Workplace Mental Health Dashboard")
-
-    dashboard["A4"] = "Main finding"
-    dashboard["A4"].font = Font(name="Aptos", bold=True, size=13, color=TEAL)
-    dashboard["A5"] = (
-        "Treatment-seeking is common in the sample, but workplace disclosure comfort is much lower. "
-        "Support visibility, perceived consequences, and work interference are strongly associated with the outcomes."
-    )
-    dashboard["A5"].alignment = Alignment(wrap_text=True, vertical="top")
-    dashboard.merge_cells("A5:H6")
-
-    kpi_values = {
-        row["metric"]: row["value"] for _, row in executive.iterrows()
-    }
-    kpis = [
-        ("Survey responses", kpi_values["Total survey responses"]),
-        ("Sought treatment", kpi_values["Sought mental health treatment"]),
-        ("Know benefits", kpi_values["Know employer provides mental health benefits"]),
-        ("Any work interference", kpi_values["Report any work interference"]),
-        ("Supervisor comfort", kpi_values["Comfortable discussing mental health with supervisor"]),
-        ("Coworker comfort", kpi_values["Comfortable discussing mental health with coworkers"]),
-    ]
-    start_cells = ["A8", "D8", "G8", "A12", "D12", "G12"]
-    for (label, value), cell_ref in zip(kpis, start_cells):
-        cell = dashboard[cell_ref]
-        row = cell.row
-        col = cell.column
-        dashboard.merge_cells(start_row=row, start_column=col, end_row=row + 2, end_column=col + 1)
-        merged = dashboard.cell(row=row, column=col)
-        merged.value = f"{label}\n{value}"
-        merged.font = Font(name="Aptos", bold=True, size=13, color=INK)
-        merged.alignment = Alignment(wrap_text=True, vertical="center", horizontal="center")
-        merged.fill = PatternFill("solid", fgColor=WHITE)
-        merged.border = Border(
-            left=Side(style="thin", color=LINE),
-            right=Side(style="thin", color=LINE),
-            top=Side(style="thin", color=LINE),
-            bottom=Side(style="thin", color=LINE),
-        )
-
-    for col in range(1, 10):
-        dashboard.column_dimensions[get_column_letter(col)].width = 16
-    for row in range(1, 32):
-        dashboard.row_dimensions[row].height = 22
-
-    setup_sheet(data_ws, "Dashboard Source Tables")
-    row = 4
-    data_ws["A4"] = "Treatment rate by benefits"
-    style_title(data_ws["A4"], 13, TEAL)
-    row += 1
-    end_row_benefits, _ = write_df(data_ws, benefits[["benefits", "respondents", "treatment_rate_percent"]], row, 1)
-
-    row = end_row_benefits + 3
-    data_ws.cell(row=row, column=1, value="Treatment rate by care options")
-    style_title(data_ws.cell(row=row, column=1), 13, TEAL)
-    row += 1
-    end_row_care, _ = write_df(data_ws, care[["care_options", "respondents", "treatment_rate_percent"]], row, 1)
-
-    row = end_row_care + 3
-    data_ws.cell(row=row, column=1, value="Treatment rate by work interference")
-    style_title(data_ws.cell(row=row, column=1), 13, TEAL)
-    row += 1
-    end_row_work, _ = write_df(data_ws, work[["work_interfere", "respondents", "treatment_rate_percent"]], row, 1)
-
-    row = end_row_work + 3
-    data_ws.cell(row=row, column=1, value="Treatment rate by company size")
-    style_title(data_ws.cell(row=row, column=1), 13, TEAL)
-    row += 1
-    end_row_company, _ = write_df(data_ws, company[["no_employees", "respondents", "treatment_rate_percent"]], row, 1)
-
-    row = end_row_company + 3
-    data_ws.cell(row=row, column=1, value="Treatment rate by family history")
-    style_title(data_ws.cell(row=row, column=1), 13, TEAL)
-    row += 1
-    write_df(data_ws, family[["family_history", "respondents", "treatment_rate_percent"]], row, 1)
-
-    setup_sheet(tests_ws, "Hypothesis Test Results")
-    tests_display = tests.copy()
-    tests_display["p_value"] = tests_display["p_value"].round(6)
-    write_df(tests_ws, tests_display, 4, 1)
-
-    setup_sheet(model_ws, "Model Results")
-    write_df(model_ws, model, 4, 1)
-    model_metrics = pd.DataFrame(
-        {
-            "metric": ["ROC AUC", "Accuracy", "Precision", "Recall", "F1 score"],
-            "score": [
-                model.loc[0, "roc_auc"],
-                model.loc[0, "accuracy"],
-                model.loc[0, "precision_treatment_yes"],
-                model.loc[0, "recall_treatment_yes"],
-                model.loc[0, "f1_treatment_yes"],
-            ],
-        }
-    )
-    write_df(model_ws, model_metrics, 8, 1)
-    model_ws["A16"] = "Top model coefficients"
-    style_title(model_ws["A16"], 13, TEAL)
-    write_df(model_ws, coefficients.head(15), 17, 1)
-
-    make_bar_chart(data_ws, "Treatment Rate By Benefits", 3, 6, end_row_benefits, 1, "E5")
-    make_bar_chart(data_ws, "Treatment Rate By Care Options", 3, end_row_benefits + 5, end_row_care, 1, "E21")
-    make_bar_chart(data_ws, "Treatment Rate By Work Interference", 3, end_row_care + 5, end_row_work, 1, "E37")
-    make_bar_chart(data_ws, "Treatment Rate By Company Size", 3, end_row_work + 5, end_row_company, 1, "E53")
-    make_bar_chart(model_ws, "Model Performance", 2, 8, 13, 1, "E4", "Score")
-
-    # Dashboard charts read from the source sheets.
-    chart = make_bar_chart(data_ws, "Treatment Rate By Benefits", 3, 6, end_row_benefits, 1, None)
-    chart.height = 7.5
-    chart.width = 12
-    dashboard.add_chart(chart, "A17")
-
-    chart = make_bar_chart(data_ws, "Treatment Rate By Work Interference", 3, end_row_care + 5, end_row_work, 1, None)
-    chart.height = 7.5
-    chart.width = 12
-    dashboard.add_chart(chart, "J17")
-
-    chart = make_bar_chart(model_ws, "Logistic Regression Model Performance", 2, 8, 13, 1, None, "Score")
-    chart.height = 7.5
-    chart.width = 12
-    dashboard.add_chart(chart, "A35")
-
-    readme_ws["A1"] = "Dashboard Submission Notes"
-    style_title(readme_ws["A1"], 18)
-    notes = [
-        "This workbook is designed to be uploaded to Google Drive and opened as Google Sheets.",
-        "Use the Dashboard sheet as the submitted dashboard.",
-        "Dashboard_Data contains the chart source tables.",
-        "Hypothesis_Tests contains statistical test results.",
-        "Model contains logistic regression model performance and coefficients.",
-        "The supplementary notebook and report contain the same chart story and reproducible analysis.",
-    ]
-    for i, note in enumerate(notes, start=3):
-        readme_ws.cell(row=i, column=1, value=note)
-        readme_ws.cell(row=i, column=1).alignment = Alignment(wrap_text=True)
-    readme_ws.column_dimensions["A"].width = 110
+    readme = wb.create_sheet("README")
 
     for ws in wb.worksheets:
-        for row_cells in ws.iter_rows():
-            for cell in row_cells:
-                cell.font = cell.font.copy(name="Aptos")
-                cell.alignment = cell.alignment.copy(vertical="center")
+        set_sheet_defaults(ws)
+
+    dashboard.freeze_panes = "A8"
+    dashboard.sheet_properties.pageSetUpPr.fitToPage = True
+    dashboard.page_setup.fitToWidth = 1
+    dashboard.page_setup.fitToHeight = 2
+    dashboard.page_margins.left = 0.25
+    dashboard.page_margins.right = 0.25
+    dashboard.page_margins.top = 0.35
+    dashboard.page_margins.bottom = 0.35
+
+    for col in range(1, 15):
+        dashboard.column_dimensions[get_column_letter(col)].width = 12.5
+
+    merge_and_write(
+        dashboard,
+        "A1:N2",
+        "Workplace Mental Health Disclosure And Support Dashboard",
+        size=22,
+        bold=True,
+        color=WHITE,
+        fill=INK,
+        align="center",
+    )
+    merge_and_write(
+        dashboard,
+        "A3:N4",
+        (
+            "OSMI Mental Health in Tech Survey | Main story: treatment-seeking is common, "
+            "but workplace disclosure comfort remains much lower."
+        ),
+        size=12,
+        color=INK,
+        fill=PALE,
+        align="center",
+    )
+
+    kpi_values = {row["metric"]: row["value"] for _, row in executive.iterrows()}
+    kpis = [
+        ("Survey responses", kpi_values["Total survey responses"], GOLD),
+        ("Sought treatment", kpi_values["Sought mental health treatment"], TEAL),
+        ("Know benefits", kpi_values["Know employer provides mental health benefits"], VIOLET),
+        ("Any work interference", kpi_values["Report any work interference"], RED),
+        ("Supervisor comfort", kpi_values["Comfortable discussing mental health with supervisor"], TEAL),
+        ("Coworker comfort", kpi_values["Comfortable discussing mental health with coworkers"], GOLD),
+    ]
+    ranges = ["A6:C8", "D6:F8", "G6:I8", "J6:L8", "A10:C12", "D10:F12"]
+    for (label, value, accent), cell_range in zip(kpis, ranges):
+        add_kpi(dashboard, cell_range, label, str(value), accent)
+
+    merge_and_write(
+        dashboard,
+        "G10:N12",
+        (
+            "Interpretation: benefit/care-option awareness, work interference, and perceived consequences "
+            "are strongly associated with treatment-seeking or disclosure comfort. Results are associations, not causal claims."
+        ),
+        size=11,
+        color=INK,
+        fill=WHITE,
+    )
+
+    # Embedded chart images. These render reliably in Excel and usually import
+    # cleanly into Google Sheets without text wrapping or gridline conflicts.
+    add_image(dashboard, ASSET_DIR / "figure_01_treatment_overview.png", "A15", 520)
+    add_image(dashboard, ASSET_DIR / "figure_02_benefits_and_care_options.png", "H15", 600)
+    add_image(dashboard, ASSET_DIR / "figure_03_treatment_by_work_interference.png", "A30", 540)
+    add_image(dashboard, ASSET_DIR / "figure_04_supervisor_comfort_by_consequence.png", "H30", 610)
+    merge_and_write(
+        dashboard,
+        "A47:N49",
+        (
+            "Dashboard source: OSMI Mental Health in Tech Survey via Kaggle. "
+            "Use Additional_Charts, Source_Tables, Hypothesis_Tests, and Model sheets for audit details."
+        ),
+        size=10,
+        color=MUTED,
+        fill=LIGHT,
+    )
+
+    extra_charts["A1"] = "Additional Dashboard Charts"
+    extra_charts["A1"].font = Font(name="Aptos", size=18, bold=True, color=INK)
+    extra_charts["A2"] = "These supporting visuals are included in the written report and kept here for dashboard audit/review."
+    extra_charts["A2"].font = Font(name="Aptos", size=11, color=MUTED)
+    extra_charts.merge_cells("A2:N3")
+    add_image(extra_charts, ASSET_DIR / "figure_05_treatment_by_company_size.png", "A5", 540)
+    add_image(extra_charts, ASSET_DIR / "figure_06_model_performance.png", "H5", 540)
+
+    source["A1"] = "Dashboard Source Tables"
+    source["A1"].font = Font(name="Aptos", size=18, bold=True, color=INK)
+    row = 3
+    for title, df in [
+        ("Treatment by benefits", benefits),
+        ("Treatment by care options", care),
+        ("Treatment by work interference", work),
+        ("Treatment by company size", company),
+        ("Treatment by family history", family),
+    ]:
+        source.cell(row=row, column=1, value=title)
+        source.cell(row=row, column=1).font = Font(name="Aptos", size=13, bold=True, color=TEAL)
+        row += 1
+        write_df(source, df, row, 1)
+        row += len(df) + 3
+
+    tests_ws["A1"] = "Hypothesis Test Results"
+    tests_ws["A1"].font = Font(name="Aptos", size=18, bold=True, color=INK)
+    write_df(tests_ws, tests, 3, 1)
+
+    model_ws["A1"] = "Model Results"
+    model_ws["A1"].font = Font(name="Aptos", size=18, bold=True, color=INK)
+    write_df(model_ws, model, 3, 1)
+    model_ws["A8"] = "Top Model Coefficients"
+    model_ws["A8"].font = Font(name="Aptos", size=13, bold=True, color=TEAL)
+    write_df(model_ws, coefficients.head(15), 9, 1)
+
+    readme["A1"] = "Dashboard Submission Notes"
+    readme["A1"].font = Font(name="Aptos", size=18, bold=True, color=INK)
+    notes = [
+        "Upload this XLSX file to Google Drive and open it with Google Sheets.",
+        "Submit the Google Sheets link as the required dashboard deliverable.",
+        "The Dashboard sheet is intentionally image-based for stable rendering after Google Sheets conversion.",
+        "Source_Tables, Hypothesis_Tests, and Model sheets provide the auditable data behind the visuals.",
+        "The written report contains the same six chart snippets, and the notebook provides reproducible analysis.",
+    ]
+    for i, note in enumerate(notes, start=3):
+        readme.cell(row=i, column=1, value=note)
+        readme.cell(row=i, column=1).font = Font(name="Aptos", size=11, color=INK)
+        readme.cell(row=i, column=1).alignment = Alignment(wrap_text=True)
+    readme.column_dimensions["A"].width = 120
 
     wb.save(WORKBOOK_PATH)
     print(f"Saved Google Sheets-ready dashboard workbook: {WORKBOOK_PATH}")

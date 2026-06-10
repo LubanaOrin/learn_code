@@ -101,7 +101,7 @@ Key performance:
 - Notebook contains six static chart references for dashboard-style visual review.
 - All notebook code cells were tested successfully.
 - Report includes six embedded chart snippets from `outputs/report_chart_assets/`.
-- Google Sheets-ready dashboard workbook contains 5 sheets and 8 native charts, including 3 charts on the Dashboard sheet.
+- Google Sheets-ready dashboard workbook contains 6 sheets, a focused Dashboard sheet with 4 embedded chart images, and an Additional_Charts sheet with 2 supporting chart images.
 - Supplementary HTML dashboard was rebuilt with embedded Plotly JavaScript for standalone access.
 - Written report DOCX was exported from Markdown and visually checked through a 7-page PDF render.
 - PPTX archive integrity check passed with no compressed-data errors.
