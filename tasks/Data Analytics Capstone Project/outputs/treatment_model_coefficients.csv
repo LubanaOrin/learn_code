@@ -1,0 +1,38 @@
+feature,coefficient,odds_ratio
+categorical__work_interfere_Often,3.9898,54.042
+categorical__work_interfere_Sometimes,3.6472,38.368
+categorical__work_interfere_Rarely,3.0599,21.326
+categorical__family_history_Yes,1.0497,2.857
+categorical__coworkers_Yes,0.9821,2.67
+categorical__work_interfere_Never,0.9249,2.522
+categorical__gender_clean_Male,-0.6928,0.5
+categorical__care_options_Yes,0.6083,1.837
+categorical__seek_help_No,-0.5213,0.594
+categorical__leave_Somewhat difficult,0.5028,1.653
+categorical__benefits_Yes,0.4689,1.598
+categorical__anonymity_Yes,0.4649,1.592
+categorical__seek_help_Yes,-0.4555,0.634
+categorical__no_employees_500-1000,0.4019,1.495
+categorical__leave_Very difficult,0.3854,1.47
+categorical__no_employees_100-500,0.3587,1.431
+categorical__coworkers_Some of them,0.3573,1.429
+categorical__no_employees_26-100,0.2891,1.335
+categorical__leave_Somewhat easy,-0.2525,0.777
+categorical__supervisor_Some of them,-0.2373,0.789
+categorical__care_options_Not sure,-0.2258,0.798
+categorical__anonymity_No,-0.2165,0.805
+categorical__mental_health_consequence_No,-0.2105,0.81
+categorical__gender_clean_Non-binary / gender diverse,0.1646,1.179
+categorical__gender_clean_Other / unclear,0.15,1.162
+categorical__tech_company_Yes,-0.1482,0.862
+categorical__wellness_program_No,0.144,1.155
+categorical__obs_consequence_Yes,0.1255,1.134
+categorical__no_employees_More than 1000,-0.1111,0.895
+categorical__supervisor_Yes,-0.1087,0.897
+categorical__no_employees_6-25,0.0904,1.095
+categorical__remote_work_Yes,-0.0826,0.921
+categorical__benefits_No,-0.0719,0.931
+numeric__age_clean,0.0566,1.058
+categorical__mental_health_consequence_Yes,-0.0488,0.952
+categorical__wellness_program_Yes,0.0152,1.015
+categorical__leave_Very easy,0.0063,1.006

@@ -1,0 +1,8 @@
+metric,value
+Total survey responses,1259
+Sought mental health treatment,637 respondents (50.6%)
+Know employer provides mental health benefits,477 respondents (37.9%)
+Report any work interference,782 respondents (62.1%)
+Comfortable discussing mental health with supervisor,516 respondents (41.0%)
+Comfortable discussing mental health with coworkers,225 respondents (17.9%)
+Logistic model ROC AUC,0.891

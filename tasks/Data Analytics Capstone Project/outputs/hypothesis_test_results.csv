@@ -1,0 +1,11 @@
+test,question,variable_1,variable_2,chi2,degrees_of_freedom,p_value,significant_at_0_05,table_rows,table_columns,statistic,groups,usable_rows
+chi-square,Association between benefits and treatment,benefits,treatment,64.8386,2.0,0.0,True,3.0,2.0,,,
+chi-square,Association between care_options and treatment,care_options,treatment,94.7587,2.0,0.0,True,3.0,2.0,,,
+chi-square,Association between family_history and treatment,family_history,treatment,178.2668,1.0,0.0,True,2.0,2.0,,,
+chi-square,Association between work_interfere and treatment,work_interfere,treatment,594.9243,4.0,0.0,True,5.0,2.0,,,
+chi-square,Association between mental_health_consequence and supervisor,mental_health_consequence,supervisor,461.6603,4.0,0.0,True,3.0,3.0,,,
+chi-square,Association between mental_health_consequence and coworkers,mental_health_consequence,coworkers,285.5339,4.0,0.0,True,3.0,3.0,,,
+chi-square,Association between remote_work and benefits,remote_work,benefits,12.4816,2.0,0.001948,True,2.0,3.0,,,
+chi-square,Association between tech_company and benefits,tech_company,benefits,9.4468,2.0,0.008885,True,2.0,3.0,,,
+kruskal-wallis,Difference in discussion_comfort_score across no_employees,no_employees,discussion_comfort_score,,,0.000238,True,,,23.7876,6.0,1259.0
+kruskal-wallis,Difference in leave_difficulty_score across no_employees,no_employees,leave_difficulty_score,,,0.065674,False,,,10.3592,6.0,1259.0

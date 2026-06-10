@@ -1,0 +1,2 @@
+model,target,train_rows,test_rows,accuracy,roc_auc,precision_treatment_yes,recall_treatment_yes,f1_treatment_yes
+Logistic regression,treatment_yes,944,315,0.819,0.891,0.797,0.862,0.828

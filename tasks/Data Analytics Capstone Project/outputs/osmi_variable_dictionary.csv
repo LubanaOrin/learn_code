@@ -1,0 +1,13 @@
+variable,type,description
+treatment_yes,outcome,"1 if respondent has sought mental health treatment, else 0."
+comfortable_with_supervisor,outcome,"1 if respondent would discuss mental health with a supervisor, else 0."
+comfortable_with_coworkers,outcome,"1 if respondent would discuss mental health with coworkers, else 0."
+work_interfere_score,predictor,Ordered score for whether mental health interferes with work.
+benefits_yes,predictor,1 if respondent knows employer provides mental health benefits.
+care_options_yes,predictor,1 if respondent knows employer provides mental health care options.
+family_history_yes,predictor,1 if respondent has family history of mental illness.
+mental_health_consequence_score,predictor,"Perceived negative consequence score: No=0, Maybe=1, Yes=2."
+leave_difficulty_score,predictor,Ordered score for difficulty taking mental health leave.
+gender_clean,control,Grouped gender category based on raw self-reported gender.
+age_clean,control,Age after treating values outside 18-75 as missing.
+company_size_order,control,Ordered company size category.
