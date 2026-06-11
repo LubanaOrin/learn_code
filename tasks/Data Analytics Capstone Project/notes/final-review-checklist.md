@@ -84,8 +84,8 @@ Key performance:
 - Google Sheets-ready dashboard workbook: `outputs/google_sheets_dashboard/osmi_mental_health_google_sheets_dashboard.xlsx`
 - Supplementary HTML dashboard: `outputs/dashboard/osmi_mental_health_dashboard.html`
 - Written report draft: `outputs/osmi_mental_health_written_report_draft.md`
-- Upload-ready report DOCX: `outputs/osmi_mental_health_written_report_upload_ready.docx`
-- Report PDF preview: `outputs/osmi_mental_health_written_report_upload_ready.pdf`
+- Upload-ready report DOCX: `outputs/osmi_mental_health_written_report.docx`
+- Report PDF preview: `outputs/osmi_mental_health_written_report.pdf`
 - Presentation: `outputs/presentation/osmi_mental_health_capstone_presentation.pptx`
 - Presentation PDF preview: `outputs/presentation/osmi_mental_health_capstone_presentation.pdf`
 - Rendered presentation QA images: `outputs/presentation/rendered_slides/`

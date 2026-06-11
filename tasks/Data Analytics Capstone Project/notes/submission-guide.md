@@ -8,8 +8,8 @@ Use these files for submission:
 - Analysis notebook with chart snippets: `notebooks/osmi_mental_health_analysis.ipynb`
 - Report chart assets: `outputs/report_chart_assets/`
 - Supplementary HTML dashboard: `outputs/dashboard/osmi_mental_health_dashboard.html`
-- Written report DOCX: `outputs/osmi_mental_health_written_report_upload_ready.docx`
-- Written report PDF preview: `outputs/osmi_mental_health_written_report_upload_ready.pdf`
+- Written report DOCX: `outputs/osmi_mental_health_written_report.docx`
+- Written report PDF preview: `outputs/osmi_mental_health_written_report.pdf`
 - Presentation PPTX: `outputs/presentation/osmi_mental_health_capstone_presentation.pptx`
 - Presentation PDF preview: `outputs/presentation/osmi_mental_health_capstone_presentation.pdf`
 - Speaker notes: `outputs/presentation/osmi_mental_health_speaker_notes.md`
@@ -21,7 +21,7 @@ The ZIP package contains the report DOCX/PDF, Google Sheets-ready dashboard work
 
 If the platform requires a Google Docs link:
 
-1. Upload `outputs/osmi_mental_health_written_report_upload_ready.docx` to Google Drive.
+1. Upload `outputs/osmi_mental_health_written_report.docx` to Google Drive.
 2. Open it with Google Docs.
 3. Check that the title, headings, bullets, and references imported correctly.
 4. Rename the Google Doc:
@@ -86,8 +86,8 @@ This capstone analyzes the OSMI Mental Health in Tech Survey to study treatment-
 
 - `README.md`
 - `notes/final-review-checklist.md`
-- `outputs/osmi_mental_health_written_report_upload_ready.docx`
-- `outputs/osmi_mental_health_written_report_upload_ready.pdf`
+- `outputs/osmi_mental_health_written_report.docx`
+- `outputs/osmi_mental_health_written_report.pdf`
 - `outputs/report_chart_assets/`
 - `outputs/google_sheets_dashboard/osmi_mental_health_google_sheets_dashboard.xlsx`
 - `outputs/dashboard/osmi_mental_health_dashboard.html`

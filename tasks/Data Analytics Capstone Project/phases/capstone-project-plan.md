@@ -343,8 +343,8 @@ Progress:
 - Created SQL/BigQuery note:
   - `sql/README.md`
 - Created upload-ready report files:
-  - `outputs/osmi_mental_health_written_report_upload_ready.docx`
-  - `outputs/osmi_mental_health_written_report_upload_ready.pdf`
+  - `outputs/osmi_mental_health_written_report.docx`
+  - `outputs/osmi_mental_health_written_report.pdf`
 - Created static chart snippets for notebook and report:
   - `outputs/report_chart_assets/`
 - Embedded six chart snippets in the written report.
