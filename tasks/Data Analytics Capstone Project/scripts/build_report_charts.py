@@ -163,7 +163,7 @@ def supervisor_consequence_chart(clean_df: pd.DataFrame) -> None:
 
 
 def company_size_chart(company_df: pd.DataFrame) -> None:
-    order = ["1 to 5", "6 to 25", "26 to 100", "100 to 500", "500 to 1000", "More than 1000"]
+    order = ["1 to 5", "6 to 25", "26 to 100", "101 to 500", "501 to 1000", "More than 1000"]
     treatment_rate_chart(
         company_df,
         "company_size",

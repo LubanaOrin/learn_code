@@ -40,7 +40,7 @@ def main() -> None:
     by_care = pd.read_csv(OUTPUT_DIR / "treatment_by_care_options.csv")
     by_work = pd.read_csv(OUTPUT_DIR / "treatment_by_work_interfere.csv")
     by_company = pd.read_csv(OUTPUT_DIR / "treatment_by_company_size.csv")
-    company_order = ["1 to 5", "6 to 25", "26 to 100", "100 to 500", "500 to 1000", "More than 1000"]
+    company_order = ["1 to 5", "6 to 25", "26 to 100", "101 to 500", "501 to 1000", "More than 1000"]
     by_company["company_size"] = pd.Categorical(
         by_company["company_size"], categories=company_order, ordered=True
     )

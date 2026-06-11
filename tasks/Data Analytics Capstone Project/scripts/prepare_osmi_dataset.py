@@ -216,8 +216,8 @@ def prepare_dataset() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         "1-5": "1 to 5",
         "6-25": "6 to 25",
         "26-100": "26 to 100",
-        "100-500": "100 to 500",
-        "500-1000": "500 to 1000",
+        "100-500": "101 to 500",
+        "500-1000": "501 to 1000",
         "More than 1000": "More than 1000",
     }
     df["company_size_order"] = df["no_employees"].map(company_size_map)

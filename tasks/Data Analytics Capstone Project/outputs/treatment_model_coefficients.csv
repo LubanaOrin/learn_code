@@ -12,9 +12,9 @@ categorical__leave_Somewhat difficult,0.5028,1.653
 categorical__benefits_Yes,0.4689,1.598
 categorical__anonymity_Yes,0.4649,1.592
 categorical__seek_help_Yes,-0.4555,0.634
-categorical__company_size_500 to 1000,0.4019,1.495
+categorical__company_size_501 to 1000,0.4019,1.495
 categorical__leave_Very difficult,0.3854,1.47
-categorical__company_size_100 to 500,0.3587,1.431
+categorical__company_size_101 to 500,0.3587,1.431
 categorical__coworkers_Some of them,0.3573,1.429
 categorical__company_size_26 to 100,0.2891,1.335
 categorical__leave_Somewhat easy,-0.2525,0.777
