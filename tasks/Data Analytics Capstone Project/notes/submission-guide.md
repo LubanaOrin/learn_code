@@ -28,7 +28,7 @@ If the platform requires a Google Docs link:
    - `Workplace Mental Health Disclosure And Support In The Technology Sector - Written Report`
 5. Share the document according to the platform instructions.
 
-The DOCX was visually checked by exporting it to PDF and reviewing all 7 rendered pages.
+The DOCX was visually checked by exporting it to PDF and reviewing all 16 rendered pages.
 
 ## Google Slides Presentation
 

@@ -35,8 +35,6 @@ The project must use a dataset that was not used in course Hands-On or Graded Ta
 
 ## Supporting Documents Saved
 
-- `notes/supporting-documents/Apple Company Analysis Report.pdf`
-- `notes/supporting-documents/Simulation Analysis Report.pdf`
 - `notes/supporting-documents/Fixing Data Set Configuration Error.pdf`
 
 ## Report Structure Guide From Examples

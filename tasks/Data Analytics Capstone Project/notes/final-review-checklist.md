@@ -103,7 +103,7 @@ Key performance:
 - Report includes six embedded chart snippets from `outputs/report_chart_assets/`.
 - Google Sheets-ready dashboard workbook contains 6 sheets, a focused Dashboard sheet with 4 embedded chart images, and an Additional_Charts sheet with 2 supporting chart images.
 - Supplementary HTML dashboard was rebuilt with embedded Plotly JavaScript for standalone access.
-- Written report DOCX was exported from Markdown and visually checked through a 7-page PDF render.
+- Written report DOCX was visually checked through a 16-page PDF render.
 - PPTX archive integrity check passed with no compressed-data errors.
 - Presentation package contains 11 slides and 11 matching notes sections.
 - Presentation was exported to an 11-page PDF and rendered into 11 slide preview images for visual QA.
