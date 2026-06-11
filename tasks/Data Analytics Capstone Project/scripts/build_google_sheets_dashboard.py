@@ -121,6 +121,15 @@ def write_df(ws, df: pd.DataFrame, start_row: int, start_col: int) -> None:
             cell = ws.cell(row=i, column=j, value=value)
             cell.font = body_font
             cell.alignment = Alignment(vertical="center", wrap_text=True)
+            column_name = str(df.columns[j - start_col])
+            if column_name in {"company_size", "no_employees"}:
+                cell.number_format = "@"
+            elif column_name in {"respondents", "treatment_count"}:
+                cell.number_format = "#,##0"
+            elif column_name == "treatment_rate":
+                cell.number_format = "0.0%"
+            elif column_name == "treatment_rate_percent":
+                cell.number_format = "0.0"
     end_row = start_row + len(df)
     end_col = start_col + len(df.columns) - 1
     style_range_border(ws, start_row, start_col, end_row, end_col)
