@@ -12,11 +12,11 @@ categorical__leave_Somewhat difficult,0.5028,1.653
 categorical__benefits_Yes,0.4689,1.598
 categorical__anonymity_Yes,0.4649,1.592
 categorical__seek_help_Yes,-0.4555,0.634
-categorical__no_employees_500-1000,0.4019,1.495
+categorical__company_size_500 to 1000,0.4019,1.495
 categorical__leave_Very difficult,0.3854,1.47
-categorical__no_employees_100-500,0.3587,1.431
+categorical__company_size_100 to 500,0.3587,1.431
 categorical__coworkers_Some of them,0.3573,1.429
-categorical__no_employees_26-100,0.2891,1.335
+categorical__company_size_26 to 100,0.2891,1.335
 categorical__leave_Somewhat easy,-0.2525,0.777
 categorical__supervisor_Some of them,-0.2373,0.789
 categorical__care_options_Not sure,-0.2258,0.798
@@ -27,9 +27,9 @@ categorical__gender_clean_Other / unclear,0.15,1.162
 categorical__tech_company_Yes,-0.1482,0.862
 categorical__wellness_program_No,0.144,1.155
 categorical__obs_consequence_Yes,0.1255,1.134
-categorical__no_employees_More than 1000,-0.1111,0.895
+categorical__company_size_More than 1000,-0.1111,0.895
 categorical__supervisor_Yes,-0.1087,0.897
-categorical__no_employees_6-25,0.0904,1.095
+categorical__company_size_6 to 25,0.0904,1.095
 categorical__remote_work_Yes,-0.0826,0.921
 categorical__benefits_No,-0.0719,0.931
 numeric__age_clean,0.0566,1.058

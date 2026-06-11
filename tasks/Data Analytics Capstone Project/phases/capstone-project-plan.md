@@ -195,7 +195,7 @@ Cleaning decisions:
 
 Verification:
 
-- Cleaned dataset has 1,259 rows and 56 columns.
+- Cleaned dataset has 1,259 rows and 57 columns.
 - 8 age values were invalid or outside the chosen 18-75 analysis range.
 - 637 respondents, or 50.6%, reported seeking treatment.
 - Notebook code cells were tested successfully.

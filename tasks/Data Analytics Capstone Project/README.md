@@ -15,7 +15,7 @@ What workplace and personal factors are associated with mental health treatment-
 - Source: https://www.kaggle.com/datasets/osmi/mental-health-in-tech-survey
 - Raw rows: 1,259
 - Raw columns: 27
-- Cleaned columns: 56
+- Cleaned columns: 57
 - Unit of analysis: one survey response
 
 ## Techniques Used

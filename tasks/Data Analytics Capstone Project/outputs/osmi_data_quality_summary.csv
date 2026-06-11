@@ -2,7 +2,7 @@ metric,value
 raw_rows,1259.0
 raw_columns,27.0
 cleaned_rows,1259.0
-cleaned_columns,56.0
+cleaned_columns,57.0
 raw_missing_values,1892.0
 invalid_or_out_of_range_age_values,8.0
 raw_gender_unique_values,49.0

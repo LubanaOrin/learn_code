@@ -11,3 +11,4 @@ leave_difficulty_score,predictor,Ordered score for difficulty taking mental heal
 gender_clean,control,Grouped gender category based on raw self-reported gender.
 age_clean,control,Age after treating values outside 18-75 as missing.
 company_size_order,control,Ordered company size category.
+company_size_label,display,"Spreadsheet-safe company size label used in report, dashboard, and presentation outputs."

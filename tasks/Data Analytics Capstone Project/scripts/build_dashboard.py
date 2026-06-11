@@ -40,11 +40,11 @@ def main() -> None:
     by_care = pd.read_csv(OUTPUT_DIR / "treatment_by_care_options.csv")
     by_work = pd.read_csv(OUTPUT_DIR / "treatment_by_work_interfere.csv")
     by_company = pd.read_csv(OUTPUT_DIR / "treatment_by_company_size.csv")
-    company_order = ["1-5", "6-25", "26-100", "100-500", "500-1000", "More than 1000"]
-    by_company["no_employees"] = pd.Categorical(
-        by_company["no_employees"], categories=company_order, ordered=True
+    company_order = ["1 to 5", "6 to 25", "26 to 100", "100 to 500", "500 to 1000", "More than 1000"]
+    by_company["company_size"] = pd.Categorical(
+        by_company["company_size"], categories=company_order, ordered=True
     )
-    by_company = by_company.sort_values("no_employees")
+    by_company = by_company.sort_values("company_size")
 
     treatment_counts = (
         clean_df["treatment"]
@@ -118,13 +118,13 @@ def main() -> None:
 
     fig_company = px.bar(
         by_company,
-        x="no_employees",
+        x="company_size",
         y="treatment_rate_percent",
         text="treatment_rate_percent",
         color="respondents",
         color_continuous_scale=["#8fb9aa", "#2f6f73"],
         title="Treatment Rate By Company Size",
-        labels={"no_employees": "Company size", "treatment_rate_percent": "Treatment rate (%)"},
+        labels={"company_size": "Company size", "treatment_rate_percent": "Treatment rate (%)"},
     )
     fig_company.update_layout(margin=dict(l=40, r=20, t=60, b=80), coloraxis_showscale=False)
 

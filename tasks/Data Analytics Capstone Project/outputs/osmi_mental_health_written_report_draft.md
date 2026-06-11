@@ -75,7 +75,7 @@ The raw dataset required cleaning before analysis. Column names were converted t
 
 Gender required cleaning because the raw dataset contained 49 unique gender values. These were grouped into 4 broader categories for analysis: Male, Female, Non-binary / gender diverse, and Other / unclear.
 
-The cleaned dataset contains 1,259 rows and 56 columns. New variables were created for analysis, including:
+The cleaned dataset contains 1,259 rows and 57 columns. New variables were created for analysis, including:
 
 - treatment_yes
 - benefits_yes

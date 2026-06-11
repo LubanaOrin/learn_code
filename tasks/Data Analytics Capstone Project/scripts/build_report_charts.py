@@ -95,6 +95,7 @@ def treatment_rate_chart(
     filename: str,
     color: str,
     order: list[str] | None = None,
+    rotation: int = 0,
 ) -> None:
     plot_df = df.copy()
     if order:
@@ -106,7 +107,7 @@ def treatment_rate_chart(
     add_bar_labels(ax, "%")
     ax.set_ylim(0, max(plot_df["treatment_rate_percent"]) * 1.22)
     ax.set_xlabel("")
-    plt.xticks(rotation=0, ha="center")
+    plt.xticks(rotation=rotation, ha="right" if rotation else "center")
     save_fig(fig, filename)
 
 
@@ -162,14 +163,15 @@ def supervisor_consequence_chart(clean_df: pd.DataFrame) -> None:
 
 
 def company_size_chart(company_df: pd.DataFrame) -> None:
-    order = ["1-5", "6-25", "26-100", "100-500", "500-1000", "More than 1000"]
+    order = ["1 to 5", "6 to 25", "26 to 100", "100 to 500", "500 to 1000", "More than 1000"]
     treatment_rate_chart(
         company_df,
-        "no_employees",
+        "company_size",
         "Treatment-Seeking Rate By Company Size",
         "figure_05_treatment_by_company_size.png",
         TEAL,
         order,
+        18,
     )
 
 

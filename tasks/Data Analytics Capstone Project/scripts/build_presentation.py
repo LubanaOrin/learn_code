@@ -250,10 +250,10 @@ def build_slides() -> tuple[list[str], list[str]]:
     slides.append(slide_xml(e))
     notes.append("State the research question and hypotheses. Emphasize that this is a survey-based quantitative study using segmentation, hypothesis testing, and logistic regression. Say that the aim is to demonstrate research thinking: variables, hypotheses, tests, interpretation, limitations.")
 
-    e = standard_header(50, "DATASET", "The Kaggle survey gives enough structure for a reproducible quantitative study.", "The raw file has 1,259 responses and 27 columns; the cleaned analysis file has 56 columns after variable creation.")
+    e = standard_header(50, "DATASET", "The Kaggle survey gives enough structure for a reproducible quantitative study.", "The raw file has 1,259 responses and 27 columns; the cleaned analysis file has 57 columns after variable creation.")
     e += kpi(60, "Raw rows", "1,259", emu(90), emu(265), emu(250), emu(105), TEAL)
     e += kpi(70, "Raw columns", "27", emu(370), emu(265), emu(250), emu(105), GOLD)
-    e += kpi(80, "Cleaned columns", "56", emu(650), emu(265), emu(250), emu(105), VIOLET)
+    e += kpi(80, "Cleaned columns", "57", emu(650), emu(265), emu(250), emu(105), VIOLET)
     e += kpi(90, "Invalid ages fixed", "8", emu(930), emu(265), emu(250), emu(105), RED)
     e += [
         text_box(100, "Cleaning choices", emu(90), emu(450), emu(280), emu(34), 20, INK, True),

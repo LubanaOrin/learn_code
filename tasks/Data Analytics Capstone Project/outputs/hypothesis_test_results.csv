@@ -7,5 +7,5 @@ chi-square,Association between mental_health_consequence and supervisor,mental_h
 chi-square,Association between mental_health_consequence and coworkers,mental_health_consequence,coworkers,285.5339,4.0,0.0,True,3.0,3.0,,,
 chi-square,Association between remote_work and benefits,remote_work,benefits,12.4816,2.0,0.001948,True,2.0,3.0,,,
 chi-square,Association between tech_company and benefits,tech_company,benefits,9.4468,2.0,0.008885,True,2.0,3.0,,,
-kruskal-wallis,Difference in discussion_comfort_score across no_employees,no_employees,discussion_comfort_score,,,0.000238,True,,,23.7876,6.0,1259.0
-kruskal-wallis,Difference in leave_difficulty_score across no_employees,no_employees,leave_difficulty_score,,,0.065674,False,,,10.3592,6.0,1259.0
+kruskal-wallis,Difference in discussion_comfort_score across company_size_label,company_size_label,discussion_comfort_score,,,0.000238,True,,,23.7876,6.0,1259.0
+kruskal-wallis,Difference in leave_difficulty_score across company_size_label,company_size_label,leave_difficulty_score,,,0.065674,False,,,10.3592,6.0,1259.0

@@ -96,7 +96,7 @@ Key performance:
 
 ## Verification Completed
 
-- Cleaned dataset has 1,259 rows and 56 columns.
+- Cleaned dataset has 1,259 rows and 57 columns.
 - Notebook has 25 cells, including 17 markdown cells and 8 code cells.
 - Notebook contains six static chart references for dashboard-style visual review.
 - All notebook code cells were tested successfully.

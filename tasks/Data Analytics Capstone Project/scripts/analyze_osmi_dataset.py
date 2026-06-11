@@ -6,7 +6,6 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import plotly.express as px
 from scipy.stats import chi2_contingency, kruskal
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
@@ -21,6 +20,24 @@ TASK_DIR = Path(__file__).resolve().parents[1]
 INPUT_PATH = TASK_DIR / "outputs" / "osmi_mental_health_cleaned.csv"
 OUTPUT_DIR = TASK_DIR / "outputs"
 CHART_DIR = OUTPUT_DIR / "charts"
+
+COMPANY_SIZE_DISPLAY_ORDER = [
+    "1 to 5",
+    "6 to 25",
+    "26 to 100",
+    "100 to 500",
+    "500 to 1000",
+    "More than 1000",
+]
+
+COMPANY_SIZE_FEATURE_LABELS = {
+    "1-5": "1 to 5",
+    "6-25": "6 to 25",
+    "26-100": "26 to 100",
+    "100-500": "100 to 500",
+    "500-1000": "500 to 1000",
+    "More than 1000": "More than 1000",
+}
 
 
 def pct(value: float) -> float:
@@ -41,6 +58,24 @@ def treatment_summary(df: pd.DataFrame, group_col: str) -> pd.DataFrame:
     return summary.sort_values(
         ["treatment_rate_percent", "respondents"], ascending=[False, False]
     )
+
+
+def company_size_summary(df: pd.DataFrame) -> pd.DataFrame:
+    summary = treatment_summary(df, "company_size_label")
+    summary["company_size_label"] = pd.Categorical(
+        summary["company_size_label"],
+        categories=COMPANY_SIZE_DISPLAY_ORDER,
+        ordered=True,
+    )
+    summary = summary.sort_values("company_size_label")
+    return summary.rename(columns={"company_size_label": "company_size"})
+
+
+def display_model_feature_name(feature: str) -> str:
+    display = feature.replace("categorical__no_employees_", "categorical__company_size_")
+    for raw, label in COMPANY_SIZE_FEATURE_LABELS.items():
+        display = display.replace(raw, label)
+    return display
 
 
 def chi_square_test(df: pd.DataFrame, row_col: str, target_col: str) -> dict:
@@ -185,11 +220,18 @@ def build_model(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     ).drop(columns="abs_coefficient")
     coefficients_df["coefficient"] = coefficients_df["coefficient"].round(4)
     coefficients_df["odds_ratio"] = coefficients_df["odds_ratio"].round(3)
+    coefficients_df["feature"] = coefficients_df["feature"].map(display_model_feature_name)
 
     return performance, coefficients_df
 
 
 def save_charts(df: pd.DataFrame, summaries: dict[str, pd.DataFrame]) -> None:
+    try:
+        import plotly.express as px
+    except ModuleNotFoundError:
+        print("Plotly is not installed; skipping supplementary interactive HTML charts.")
+        return
+
     CHART_DIR.mkdir(parents=True, exist_ok=True)
 
     treatment_counts = (
@@ -258,7 +300,7 @@ def main() -> None:
         "treatment_by_care_options": treatment_summary(df, "care_options"),
         "treatment_by_family_history": treatment_summary(df, "family_history"),
         "treatment_by_work_interfere": treatment_summary(df, "work_interfere"),
-        "treatment_by_company_size": treatment_summary(df, "no_employees"),
+        "treatment_by_company_size": company_size_summary(df),
         "treatment_by_remote_work": treatment_summary(df, "remote_work"),
         "treatment_by_tech_company": treatment_summary(df, "tech_company"),
         "treatment_by_gender_clean": treatment_summary(df, "gender_clean"),
@@ -277,8 +319,8 @@ def main() -> None:
             chi_square_test(df, "mental_health_consequence", "coworkers"),
             chi_square_test(df, "remote_work", "benefits"),
             chi_square_test(df, "tech_company", "benefits"),
-            kruskal_test(df, "no_employees", "discussion_comfort_score"),
-            kruskal_test(df, "no_employees", "leave_difficulty_score"),
+            kruskal_test(df, "company_size_label", "discussion_comfort_score"),
+            kruskal_test(df, "company_size_label", "leave_difficulty_score"),
         ]
     )
     tests.to_csv(OUTPUT_DIR / "hypothesis_test_results.csv", index=False)

@@ -234,7 +234,7 @@ def build_workbook() -> None:
 
     extra_charts["A1"] = "Additional Dashboard Charts"
     extra_charts["A1"].font = Font(name="Aptos", size=18, bold=True, color=INK)
-    extra_charts["A2"] = "These supporting visuals are included in the written report and kept here for dashboard audit/review."
+    extra_charts["A2"] = "Supporting visuals used in the written report and dashboard audit."
     extra_charts["A2"].font = Font(name="Aptos", size=11, color=MUTED)
     extra_charts.merge_cells("A2:N3")
     add_image(extra_charts, ASSET_DIR / "figure_05_treatment_by_company_size.png", "A5", 540)
