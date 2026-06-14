@@ -105,8 +105,17 @@ def build_notebook() -> dict:
             """
             from pathlib import Path
 
+            import numpy as np
             import pandas as pd
             from IPython.display import display
+            from scipy.stats import chi2_contingency, kruskal
+            from sklearn.compose import ColumnTransformer
+            from sklearn.impute import SimpleImputer
+            from sklearn.linear_model import LogisticRegression
+            from sklearn.metrics import accuracy_score, classification_report, roc_auc_score
+            from sklearn.model_selection import train_test_split
+            from sklearn.pipeline import Pipeline
+            from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
             TASK_DIR = Path.cwd().parent if Path.cwd().name == "notebooks" else Path.cwd()
             OUTPUT_DIR = TASK_DIR / "outputs"
@@ -204,6 +213,63 @@ def build_notebook() -> dict:
         ),
         code(
             """
+            def chi_square_test(df, row_col, target_col):
+                table = pd.crosstab(df[row_col], df[target_col])
+                chi2, p_value, dof, expected = chi2_contingency(table)
+                return {
+                    "test": "chi-square",
+                    "question": f"Association between {row_col} and {target_col}",
+                    "variable_1": row_col,
+                    "variable_2": target_col,
+                    "chi2": round(float(chi2), 4),
+                    "degrees_of_freedom": int(dof),
+                    "p_value": round(float(p_value), 6),
+                    "significant_at_0_05": bool(p_value < 0.05),
+                    "table_rows": int(table.shape[0]),
+                    "table_columns": int(table.shape[1]),
+                }
+
+            def kruskal_test(df, group_col, score_col):
+                usable = df[[group_col, score_col]].dropna()
+                groups = [group[score_col].values for _, group in usable.groupby(group_col)]
+                statistic, p_value = kruskal(*groups)
+                return {
+                    "test": "kruskal-wallis",
+                    "question": f"Difference in {score_col} across {group_col}",
+                    "variable_1": group_col,
+                    "variable_2": score_col,
+                    "statistic": round(float(statistic), 4),
+                    "p_value": round(float(p_value), 6),
+                    "significant_at_0_05": bool(p_value < 0.05),
+                    "groups": int(usable[group_col].nunique()),
+                    "usable_rows": int(len(usable)),
+                }
+
+            calculated_tests_df = pd.DataFrame(
+                [
+                    chi_square_test(clean_df, "benefits", "treatment"),
+                    chi_square_test(clean_df, "care_options", "treatment"),
+                    chi_square_test(clean_df, "family_history", "treatment"),
+                    chi_square_test(clean_df, "work_interfere", "treatment"),
+                    chi_square_test(clean_df, "mental_health_consequence", "supervisor"),
+                    chi_square_test(clean_df, "mental_health_consequence", "coworkers"),
+                    chi_square_test(clean_df, "remote_work", "benefits"),
+                    chi_square_test(clean_df, "tech_company", "benefits"),
+                    kruskal_test(clean_df, "company_size_label", "discussion_comfort_score"),
+                    kruskal_test(clean_df, "company_size_label", "leave_difficulty_score"),
+                ]
+            )
+
+            display(calculated_tests_df)
+            """
+        ),
+        markdown(
+            """
+            The table above is calculated directly in this notebook. The saved table below is the same output stored in the project files and used by the report, dashboard, and presentation.
+            """
+        ),
+        code(
+            """
             display(tests_df)
             """
         ),
@@ -237,6 +303,119 @@ def build_notebook() -> dict:
             - `0`: respondent did not seek mental health treatment.
 
             The model uses workplace support, work context, family history, age, and gender variables to estimate which factors are associated with treatment-seeking.
+            """
+        ),
+        code(
+            """
+            model_df = clean_df[
+                [
+                    "treatment_yes",
+                    "age_clean",
+                    "gender_clean",
+                    "family_history",
+                    "work_interfere",
+                    "no_employees",
+                    "remote_work",
+                    "tech_company",
+                    "benefits",
+                    "care_options",
+                    "wellness_program",
+                    "seek_help",
+                    "anonymity",
+                    "leave",
+                    "mental_health_consequence",
+                    "coworkers",
+                    "supervisor",
+                    "obs_consequence",
+                ]
+            ].copy()
+
+            x = model_df.drop(columns=["treatment_yes"])
+            y = model_df["treatment_yes"]
+
+            numeric_features = ["age_clean"]
+            categorical_features = [col for col in x.columns if col not in numeric_features]
+
+            preprocessor = ColumnTransformer(
+                transformers=[
+                    (
+                        "numeric",
+                        Pipeline(
+                            steps=[
+                                ("imputer", SimpleImputer(strategy="median")),
+                                ("scaler", StandardScaler()),
+                            ]
+                        ),
+                        numeric_features,
+                    ),
+                    (
+                        "categorical",
+                        Pipeline(
+                            steps=[
+                                ("imputer", SimpleImputer(strategy="most_frequent")),
+                                ("onehot", OneHotEncoder(handle_unknown="ignore", drop="first")),
+                            ]
+                        ),
+                        categorical_features,
+                    ),
+                ]
+            )
+
+            logistic_model = Pipeline(
+                steps=[
+                    ("preprocessor", preprocessor),
+                    ("classifier", LogisticRegression(max_iter=1000, class_weight="balanced")),
+                ]
+            )
+
+            x_train, x_test, y_train, y_test = train_test_split(
+                x, y, test_size=0.25, random_state=42, stratify=y
+            )
+            logistic_model.fit(x_train, y_train)
+
+            y_pred = logistic_model.predict(x_test)
+            y_prob = logistic_model.predict_proba(x_test)[:, 1]
+            report = classification_report(y_test, y_pred, output_dict=True, zero_division=0)
+
+            calculated_model_perf_df = pd.DataFrame(
+                [
+                    {
+                        "model": "Logistic regression",
+                        "target": "treatment_yes",
+                        "train_rows": len(x_train),
+                        "test_rows": len(x_test),
+                        "accuracy": round(float(accuracy_score(y_test, y_pred)), 3),
+                        "roc_auc": round(float(roc_auc_score(y_test, y_prob)), 3),
+                        "precision_treatment_yes": round(report["1"]["precision"], 3),
+                        "recall_treatment_yes": round(report["1"]["recall"], 3),
+                        "f1_treatment_yes": round(report["1"]["f1-score"], 3),
+                    }
+                ]
+            )
+
+            feature_names = logistic_model.named_steps["preprocessor"].get_feature_names_out()
+            coefficients = logistic_model.named_steps["classifier"].coef_[0]
+            calculated_model_coef_df = pd.DataFrame(
+                {
+                    "feature": feature_names,
+                    "coefficient": coefficients,
+                    "odds_ratio": np.exp(coefficients),
+                }
+            )
+            calculated_model_coef_df["abs_coefficient"] = calculated_model_coef_df["coefficient"].abs()
+            calculated_model_coef_df = calculated_model_coef_df.sort_values(
+                "abs_coefficient", ascending=False
+            ).drop(columns="abs_coefficient")
+            calculated_model_coef_df["coefficient"] = calculated_model_coef_df["coefficient"].round(4)
+            calculated_model_coef_df["odds_ratio"] = calculated_model_coef_df["odds_ratio"].round(3)
+
+            display(calculated_model_perf_df)
+            display(calculated_model_coef_df.head(15))
+            """
+        ),
+        markdown(
+            """
+            The model outputs above are calculated directly in this notebook. The saved tables below are the matching project outputs used by the report, dashboard, and presentation.
             """
         ),
         code(
