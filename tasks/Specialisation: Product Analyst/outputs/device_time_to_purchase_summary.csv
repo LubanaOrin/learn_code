@@ -1,0 +1,4 @@
+device_category,purchasing_users,median_minutes,p75_minutes,p90_minutes
+desktop,2722,19.2,46.17,179.73
+mobile,1969,18.92,45.73,178.65
+tablet,103,17.1,46.94,105.51

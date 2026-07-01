@@ -1,0 +1,4 @@
+month,days,total_purchasing_users,avg_daily_purchasing_users,avg_median_duration,median_of_median_duration,avg_p90_duration
+2020-11,30,1601,53.37,18.22,17.89,151.99
+2020-12,31,2085,67.26,19.99,20.0,198.18
+2021-01,31,1108,35.74,17.95,15.78,147.16
