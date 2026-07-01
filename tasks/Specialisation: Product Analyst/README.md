@@ -48,8 +48,8 @@ The table contains 4,295,584 frontend event rows from 2020-11-01 to 2021-01-31.
 - `outputs/charts/device_median_time_to_purchase.png`: device split chart.
 - `outputs/charts/top_country_median_time_to_purchase.png`: country split chart.
 - `outputs/monthly_time_to_purchase_summary.csv`: monthly summary table.
-- `outputs/FINAL_SUBMISSION_FILES/product_analyst_time_to_purchase.pptx`: final PowerPoint presentation.
-- `outputs/FINAL_SUBMISSION_FILES/time_to_purchase_dashboard.xlsx`: Excel/Google Sheets-ready visualization workbook.
+- `outputs/product_analyst_time_to_purchase.pptx`: final PowerPoint presentation.
+- `outputs/time_to_purchase_dashboard.xlsx`: Excel/Google Sheets-ready visualization workbook.
 - `scripts/build_presentation_charts.py`: reproducible script that builds presentation chart images.
 - `scripts/build_excel_visualization.py`: reproducible script that builds the Excel workbook.
 
@@ -142,21 +142,21 @@ Recommended future improvements are:
 
 ## Final Presentation
 
-The PowerPoint presentation is saved at:
+The final PowerPoint presentation is saved at:
 
 ```text
-outputs/FINAL_SUBMISSION_FILES/product_analyst_time_to_purchase.pptx
+outputs/product_analyst_time_to_purchase.pptx
 ```
 
 It contains 10 slides following the decision-led story listed above.
 
-## Final Submission Files
+## Portfolio Outputs
 
-Only use these locations for submission:
+The GitHub project presents the final deliverables directly in `outputs/`:
 
-```text
-outputs/FINAL_SUBMISSION_FILES/
-```
+- `product_analyst_time_to_purchase.pptx`;
+- `time_to_purchase_dashboard.xlsx`;
+- presentation-ready charts and analytical summary CSV files.
 
 The final Excel workbook contains:
 

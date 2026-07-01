@@ -14,11 +14,7 @@ from openpyxl.utils import get_column_letter
 
 TASK_DIR = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = TASK_DIR / "outputs"
-WORKBOOK_PATH = (
-    OUTPUT_DIR
-    / "FINAL_SUBMISSION_FILES"
-    / "time_to_purchase_dashboard.xlsx"
-)
+WORKBOOK_PATH = OUTPUT_DIR / "time_to_purchase_dashboard.xlsx"
 
 INK = "24313D"
 MUTED = "5F6B7A"
