@@ -2,3 +2,8 @@
 __pycache__/
 .ipynb_checkpoints/
 .venv/
+
+# Local college-delivery packages are duplicates of portfolio deliverables.
+tasks/Data Analytics Capstone Project/outputs/college_upload_files/
+tasks/Data Analytics Capstone Project/outputs/college_upload_files.zip
+tasks/Data Analytics Capstone Project/outputs/data_analytics_capstone_submission_package.zip
