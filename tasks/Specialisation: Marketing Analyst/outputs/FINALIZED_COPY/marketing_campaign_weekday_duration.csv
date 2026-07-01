@@ -1,0 +1,58 @@
+campaign,weekday_name,weekday_number,weekday_sort_monday_start,sessions,avg_session_duration_minutes,avg_session_duration_hh_mm_ss,median_session_duration_minutes,max_session_duration_minutes,avg_events_per_session
+(organic),Monday,2,1,14660,4.12,00:04:07,0.38,115.33,14.04
+(organic),Tuesday,3,2,16483,4.26,00:04:15,0.42,173.8,14.4
+(organic),Wednesday,4,3,16143,4.21,00:04:13,0.4,220.52,14.26
+(organic),Thursday,5,4,16051,4.09,00:04:06,0.38,195.45,13.71
+(organic),Friday,6,5,15324,4.13,00:04:08,0.37,189.3,14.24
+(organic),Saturday,7,6,11928,3.79,00:03:47,0.35,135.25,13.82
+(organic),Sunday,1,7,11720,3.63,00:03:38,0.32,141.17,13.58
+(referral),Monday,2,1,12068,5.35,00:05:21,0.7,158.17,17.23
+(referral),Tuesday,3,2,14456,5.7,00:05:42,0.88,180.47,17.45
+(referral),Wednesday,4,3,14260,5.77,00:05:46,0.9,189.65,17.58
+(referral),Thursday,5,4,13100,5.68,00:05:41,0.88,160.02,17.11
+(referral),Friday,6,5,11786,5.72,00:05:43,0.8,174.97,18.19
+(referral),Saturday,7,6,8369,5.4,00:05:24,0.63,133.68,16.8
+(referral),Sunday,1,7,8314,4.85,00:04:51,0.6,144.88,15.63
+<Other>,Monday,2,1,5081,3.04,00:03:03,0.3,96.75,12.31
+<Other>,Tuesday,3,2,5722,3.32,00:03:19,0.33,94.27,12.05
+<Other>,Wednesday,4,3,5487,3.48,00:03:29,0.33,114.5,12.58
+<Other>,Thursday,5,4,5022,3.26,00:03:15,0.3,99.17,12.27
+<Other>,Friday,6,5,4472,3.49,00:03:29,0.33,92.98,13.18
+<Other>,Saturday,7,6,3612,3.03,00:03:02,0.3,175.57,12.77
+<Other>,Sunday,1,7,3627,2.96,00:02:57,0.33,94.4,12.57
+BlackFriday_V1,Tuesday,3,2,1,6.67,00:06:40,6.67,6.67,19
+BlackFriday_V1,Friday,6,5,2,12.44,00:12:27,4.42,20.47,69
+BlackFriday_V1,Saturday,7,6,5,17.56,00:17:34,18.03,45.45,57.6
+BlackFriday_V2,Monday,2,1,9,17.59,00:17:35,1.88,106.43,43.78
+BlackFriday_V2,Tuesday,3,2,6,12.27,00:12:16,8.3,23.2,82.33
+BlackFriday_V2,Wednesday,4,3,2,5.81,00:05:49,0,11.62,42.5
+BlackFriday_V2,Thursday,5,4,1,4.5,00:04:30,4.5,4.5,47
+BlackFriday_V2,Friday,6,5,2,19.88,00:19:53,15.95,23.8,119.5
+BlackFriday_V2,Sunday,1,7,4,26.73,00:26:44,24.7,41.13,120.75
+Data Share Promo,Monday,2,1,205,6.66,00:06:40,1.02,104.63,11.28
+Data Share Promo,Tuesday,3,2,215,5.85,00:05:51,0.35,73.28,9.75
+Data Share Promo,Wednesday,4,3,181,7.94,00:07:56,0.5,112.78,10.48
+Data Share Promo,Thursday,5,4,191,7.04,00:07:02,0.97,86.28,10.49
+Data Share Promo,Friday,6,5,212,6.09,00:06:06,1.08,45.33,9.62
+Data Share Promo,Saturday,7,6,189,5.03,00:05:02,0.28,56.82,8.46
+Data Share Promo,Sunday,1,7,101,6.31,00:06:19,0.82,87.3,12.85
+Holiday_V1,Tuesday,3,2,1,1.7,00:01:42,1.7,1.7,22
+Holiday_V1,Wednesday,4,3,2,12.53,00:12:32,5.75,19.32,52.5
+Holiday_V1,Thursday,5,4,2,1.82,00:01:50,0.08,3.57,11
+Holiday_V1,Friday,6,5,7,8.96,00:08:58,1.47,51.27,29.14
+Holiday_V1,Saturday,7,6,5,12.59,00:12:35,1.32,53.9,47.6
+Holiday_V2,Monday,2,1,7,10.24,00:10:14,8.37,26.8,35.29
+Holiday_V2,Tuesday,3,2,3,2.17,00:02:10,2.05,4.45,19.67
+Holiday_V2,Thursday,5,4,4,4.4,00:04:24,0.08,11.62,29.5
+Holiday_V2,Friday,6,5,19,6.27,00:06:16,3.75,27.75,28
+Holiday_V2,Saturday,7,6,3,7.63,00:07:38,2.15,20.75,48.67
+Holiday_V2,Sunday,1,7,1,0.9,00:00:54,0.9,0.9,8
+NewYear_V1,Wednesday,4,3,11,4.85,00:04:51,2,12.6,19.55
+NewYear_V1,Thursday,5,4,35,5,00:05:00,1.58,37,18.91
+NewYear_V1,Friday,6,5,13,2,00:02:00,0.32,17.77,10.85
+NewYear_V1,Saturday,7,6,2,1.63,00:01:38,1.45,1.82,17
+NewYear_V1,Sunday,1,7,5,1.23,00:01:14,0.08,4.13,6.2
+NewYear_V2,Wednesday,4,3,5,4.62,00:04:37,0.98,18.27,9.8
+NewYear_V2,Thursday,5,4,27,3.79,00:03:48,1.12,22.18,12.78
+NewYear_V2,Friday,6,5,5,4.43,00:04:26,1.97,10.22,22.6
+NewYear_V2,Saturday,7,6,2,16.6,00:16:36,0.08,33.12,13.5
