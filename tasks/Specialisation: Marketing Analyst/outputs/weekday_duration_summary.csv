@@ -1,0 +1,8 @@
+weekday_name,total_sessions,weighted_avg_duration_minutes,median_of_campaign_medians
+Monday,32030,4.43,0.86
+Tuesday,36887,4.69,1.29
+Wednesday,36091,4.73,0.7
+Thursday,34433,4.59,0.88
+Friday,31842,4.64,1.275
+Saturday,24115,4.25,0.63
+Sunday,23772,3.97,0.6
