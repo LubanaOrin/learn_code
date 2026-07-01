@@ -1,0 +1,11 @@
+campaign,total_sessions,weighted_avg_duration_minutes,median_of_weekday_medians,avg_events_per_session,observed_weekdays
+(organic),102309,4.06,0.38,14.03,7
+(referral),82353,5.54,0.8,17.24,7
+<Other>,33023,3.25,0.33,12.5,7
+Data Share Promo,1294,6.4,0.82,10.24,7
+NewYear_V1,66,4.0,1.45,16.41,5
+NewYear_V2,39,4.64,1.05,13.69,4
+Holiday_V2,37,6.45,2.0999999999999996,30.0,6
+BlackFriday_V2,24,16.45,6.4,72.58,6
+Holiday_V1,17,9.18,1.47,34.76,5
+BlackFriday_V1,8,14.92,6.67,55.62,3
