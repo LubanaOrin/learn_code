@@ -23,22 +23,18 @@ The assignment wording may show `turing_college.raw_events`. If your BigQuery wo
 - `sql/marketing_campaign_comparison_session_duration.sql`: BigQuery SQL for modeled weekday session duration by campaign.
 - `data/marketing_campaign_weekday_duration.csv`: exported BigQuery result.
 - `outputs/charts/`: chart images created from the export.
-- `outputs/marketing_campaign_comparison_presentation.pptx`: final portfolio presentation.
-- `outputs/marketing_campaign_duration_dashboard.xlsx`: final Excel dashboard.
-- `outputs/marketing_campaign_comparison_findings.md`: written findings.
-- `outputs/marketing_campaign_comparison_speaker_notes.md`: presentation notes.
-
-College-only submission folders and zip packages are kept locally and excluded from Git.
+- `outputs/FINAL_SUBMISSION_FILES/`: final files for review/upload.
 
 ## Current Status
 
-The portfolio version is complete.
+The first final version is complete.
 
-Final portfolio files:
+Final submission files:
 
 - `marketing_campaign_comparison_presentation.pptx`
-- `marketing_campaign_duration_dashboard.xlsx`
 - `marketing_campaign_comparison_findings.md`
+- `marketing_campaign_comparison_session_duration.sql`
+- `marketing_campaign_weekday_duration.csv`
 
 Main result:
 
