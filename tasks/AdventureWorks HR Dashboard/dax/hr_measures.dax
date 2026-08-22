@@ -1,0 +1,84 @@
+Active Headcount =
+VAR TotalActives =
+    COUNTROWS ( FILTER ( Employee, Employee[CurrentFlag] = TRUE() ) )
+RETURN
+    COALESCE ( TotalActives, 0 )
+
+New Hires =
+VAR SelectedYear = SELECTEDVALUE ( DimDate[Year] )
+RETURN
+IF (
+    ISBLANK ( SelectedYear ),
+    COUNTROWS ( Employee ),
+    CALCULATE (
+        COUNTROWS ( Employee ),
+        FILTER ( Employee, YEAR ( Employee[HireDate] ) = SelectedYear )
+    )
+)
+
+New Hires YoY % =
+VAR SelectedYear = SELECTEDVALUE ( DimDate[Year] )
+VAR CurrentYearHires =
+    CALCULATE ( [New Hires], FILTER ( ALL ( DimDate ), DimDate[Year] = SelectedYear ) )
+VAR LastYearHires =
+    CALCULATE ( [New Hires], FILTER ( ALL ( DimDate ), DimDate[Year] = SelectedYear - 1 ) )
+RETURN
+IF (
+    ISBLANK ( SelectedYear ),
+    0,
+    DIVIDE ( CurrentYearHires - LastYearHires, LastYearHires, 0 )
+)
+
+Employees by Department =
+CALCULATE (
+    DISTINCTCOUNT ( EmployeeDepartmentHistory[BusinessEntityID] ),
+    FILTER (
+        EmployeeDepartmentHistory,
+        ISBLANK ( EmployeeDepartmentHistory[EndDate] )
+    ),
+    Employee[CurrentFlag] = TRUE()
+)
+
+Total Departments =
+DISTINCTCOUNT ( Department[DepartmentID] )
+
+Gender Ratio =
+"♂ " & FORMAT ( [Male %], "0" ) & "%  |  ♀ " & FORMAT ( [Female %], "0" ) & "%"
+
+Average Tenure (Years) =
+VAR SelectedYear = MAX ( DimDate[Year] )
+RETURN
+AVERAGEX (
+    Employee,
+    DATEDIFF ( Employee[HireDate], DATE ( SelectedYear, 12, 31 ), YEAR )
+)
+
+Transfer Rate % =
+DIVIDE ( [Transferred Employees], [Total Employees] )
+
+Transferred Employees =
+VAR Transfers =
+    CALCULATETABLE (
+        VALUES ( EmployeeDepartmentHistory[BusinessEntityID] ),
+        NOT ( ISBLANK ( EmployeeDepartmentHistory[EndDate] ) )
+    )
+RETURN
+    COUNTROWS ( Transfers )
+
+Attrition Rate % =
+VAR Terminated = [Terminated Employees]
+VAR Total = [Total Employees]
+RETURN
+    IF ( Total > 0, DIVIDE ( Terminated, Total ), 0 )
+
+Terminated Employees =
+VAR TerminatedCount =
+    CALCULATE (
+        DISTINCTCOUNT ( Employee[BusinessEntityID] ),
+        FILTER ( Employee, Employee[CurrentFlag] = FALSE() )
+    )
+RETURN
+    COALESCE ( TerminatedCount, 0 )
+
+Total Employees =
+DISTINCTCOUNT ( Employee[BusinessEntityID] )
