@@ -9,6 +9,7 @@ The goal is to understand how many users remain active after starting a subscrip
 ## Main Deliverables
 
 - `Weekly Cohort Retention Results.xlsx`: workbook with query results, pivot output, and cohort retention visualization.
+- `weekly_cohort_retention_results.csv`: previewable CSV export of the final query results.
 - `sql/weekly_cohort_retention.sql`: SQL query used to calculate weekly cohort retention.
 
 The workbook is kept for outputs and visualization. The SQL query is stored separately so the logic is easy to review on GitHub.
@@ -32,13 +33,17 @@ The analysis assumes the reporting date is **2021-02-07**.
 
 The Excel workbook contains:
 
-- `SQL Result`: exported query output with cohort week, week index, active users, cohort size, and retention rate.
-- `Pivot Table 4`: pivot-table support for summarizing retention.
-- `Cohort Results`: cohort retention table and heatmap-style view.
+- `SQL Result`: exported query output with readable cohort dates and retention percentages.
+- `Retention Pivot`: pivot-table support for summarizing retention.
+- `Cohort Results`: cohort retention percentage table from Week 0 to Week 6.
 
 ## Key Findings
 
-- The strongest drop-off happens early, between the starting week and the first few following weeks.
+- `Week 0` is the baseline, so each cohort starts at **100.0%** retention.
+- The first cohort, starting **2020-10-26**, had **87.9%** retention by Week 6.
+- The cohort starting **2020-11-02** had **85.3%** retention by Week 6.
+- The cohort starting **2020-11-09** had **85.6%** retention by Week 6.
+- The strongest drop-off happens early, especially between Week 1 and Week 2.
 - After the early drop-off, retention declines more slowly and becomes more stable.
 - Cohorts show broadly similar retention patterns, suggesting consistent subscription behavior.
 - Newer cohorts appear slightly stronger in some weeks, but the difference is not large enough to overclaim without more context.
