@@ -1,0 +1,6 @@
+segment,customers,total_revenue_millions,notes
+Best Customers,435,4.02,About 10% of customers generate about 48% of revenue.
+Loyal Customers,946,2.20,Similar in size to Lost Customers but generates about 5 times more revenue.
+Big Spenders,226,0.64,High monetary value customers with lower overall count.
+Other,1740,1.08,Largest segment but lower revenue concentration.
+Lost Customers,950,0.45,Large segment with low revenue contribution and reactivation risk.
