@@ -1,0 +1,4 @@
+comparison,mean_difference,p_value,confidence_level,confidence_interval,result
+Promotion 1 vs Promotion 2,43.08,0.00128,99%,"[9.05, 77.11]",Statistically significant
+Promotion 1 vs Promotion 3,10.94,0.43,99%,"[-25.05, 46.93]",Not statistically significant
+Promotion 2 vs Promotion 3,-32.14,0.0136,99%,"[-65.70, 1.42]",Not statistically significant at 99%
