@@ -1,72 +1,64 @@
 # Spotify Top 50 Tracks Data Analysis
 
-This repository is for a beginner-friendly Data Analytics course project.
+## Project Overview
 
-## Where To Put The Kaggle Dataset
+This project analyzes the Spotify Top 50 Tracks of 2020 dataset using Python and Pandas. The goal is to clean the data, explore track and artist patterns, and identify which audio features are most visible among popular songs.
 
-Put the downloaded Kaggle CSV file in this folder:
+The analysis is presented in a Jupyter Notebook so the code, results, and explanations can be read together.
 
-```text
-data/
-```
+## Files
 
-For this project, we will expect the file to be named:
+- `data/spotifytoptracks.csv` - source dataset
+- `notebooks/spotify_top_50_eda.ipynb` - completed exploratory data analysis notebook
+- `requirements.txt` - Python packages used for the notebook
 
-```text
-data/spotify_top_50_2020.csv
-```
+## Analysis Questions
 
-If the downloaded file has a different name, that is okay. We can rename it later or update the code to match the real file name.
+The notebook answers questions about:
 
-## Project Folders
+- dataset size, feature types, and data quality
+- duplicate samples, duplicate features, missing values, and outliers
+- artists and albums with multiple popular tracks
+- most represented artists, albums, and genres
+- tracks with high or low danceability and loudness
+- longest and shortest tracks
+- strong positive, strong negative, and weak correlations between audio features
+- genre-level comparisons for danceability, loudness, and acousticness
 
-- `data/` - the raw Kaggle dataset goes here.
-- `notebooks/` - Jupyter notebooks go here when we start using them.
-- `outputs/` - charts, cleaned data, or final exported results go here.
-- `notes/` - learning notes and explanations go here.
-- `phases/` - task plans and progress notes go here.
+## Key Findings
 
-## How To Open The Notebook
+- The dataset contains 50 tracks.
+- After cleaning, the analysis uses 17 working features.
+- Billie Eilish, Dua Lipa, and Travis Scott are tied for the highest number of tracks in the dataset.
+- Pop is the most common genre, followed by Hip-Hop/Rap.
+- `WAP (feat. Megan Thee Stallion)` has the highest danceability score.
+- `SICKO MODE` is the longest track, while `Mood (feat. iann dior)` is the shortest.
+- Energy and loudness have a strong positive relationship.
+- Energy and acousticness have a strong negative relationship.
 
-From the repository root, run:
+## Tools Used
+
+- Python
+- Pandas
+- Jupyter Notebook
+- Matplotlib
+- Seaborn
+
+## How to Run
+
+From this project folder:
 
 ```bash
-cd "tasks/Spotify Data Analysis/notebooks"
+pip install -r requirements.txt
+jupyter notebook notebooks/spotify_top_50_eda.ipynb
 ```
 
-This command moves your terminal into the notebook folder.
+The notebook expects the dataset at:
 
-Then run:
-
-```bash
-../.venv/bin/jupyter notebook spotify_top_50_eda.ipynb
+```text
+data/spotifytoptracks.csv
 ```
 
-This opens the Spotify analysis notebook in Jupyter.
+## Improvement Ideas
 
-If the browser does not open automatically, the terminal should show a local link that starts with `http://localhost:`. Copy that link into your browser.
-
-## Python Script Or Jupyter Notebook?
-
-For data analysis, Jupyter Notebook is usually better for learning and presenting your work.
-
-A notebook lets you mix:
-
-- code,
-- results,
-- charts,
-- and written explanations
-
-in one readable document.
-
-A Python script is still useful when you want to run the same code again and again, but it is less friendly for explaining your thinking step by step.
-
-For this course project, the best approach is:
-
-1. Start with Python basics because you are already familiar with `.py` files.
-2. Move the final analysis into a Jupyter Notebook so your explanations and results are together.
-3. Keep any reusable helper code in Python files if the project becomes larger.
-
-## Next Step
-
-Continue the notebook by identifying which columns are text categories and which columns are numeric measurements.
+Future improvements could include adding more years of data, comparing trends over time, grouping similar genres, and adding streaming or popularity metrics to connect audio features with commercial performance.
