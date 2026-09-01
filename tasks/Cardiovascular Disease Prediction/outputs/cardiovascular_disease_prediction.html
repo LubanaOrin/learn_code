@@ -7519,7 +7519,7 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="Cardiovascular-Disease-Prediction">Cardiovascular Disease Prediction<a class="anchor-link" href="#Cardiovascular-Disease-Prediction">¶</a></h1><h2 id="Context-and-Project-Goal">Context and Project Goal<a class="anchor-link" href="#Context-and-Project-Goal">¶</a></h2><p>The dataset comes from a cardiovascular study. The goal is to build an interpretable logistic regression model that estimates whether a patient is at risk of developing coronary heart disease (CHD) within 10 years.</p>
 <p>The notebook follows the same overall structure as the hands-on modeling task: preprocessing review, exploratory analysis, feature selection, logistic regression modeling, metric interpretation, threshold optimization, coefficient interpretation, and final recommendations.</p>
-<p>The main upgrade is workflow quality. The notebook is self-contained for review, so the evaluator can see the full path from raw data to model interpretation in one place.</p>
+<p>The main upgrade is workflow quality. The notebook is self-contained for readers, so the evaluator can see the full path from raw data to model interpretation in one place.</p>
 </div>
 </div>
 </div>
@@ -7823,7 +7823,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Exploratory-Data-Analysis">Exploratory Data Analysis<a class="anchor-link" href="#Exploratory-Data-Analysis">¶</a></h2><p>Exploratory analysis focuses on risk patterns that are strong enough to justify inclusion in an interpretable model. Age, blood pressure, smoking intensity, glucose, cholesterol, and sex are emphasized because they are clinically meaningful and explainable to both technical and non-technical reviewers.</p>
+<h2 id="Exploratory-Data-Analysis">Exploratory Data Analysis<a class="anchor-link" href="#Exploratory-Data-Analysis">¶</a></h2><p>Exploratory analysis focuses on risk patterns that are strong enough to justify inclusion in an interpretable model. Age, blood pressure, smoking intensity, glucose, cholesterol, and sex are emphasized because they are clinically meaningful and explainable to both technical and non-technical readers.</p>
 </div>
 </div>
 </div>
@@ -8040,6 +8040,29 @@ a.anchor-link {
 </div>
 </div>
 </div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=37ad3dbb">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Age-as-a-Confounding-Variable">Age as a Confounding Variable<a class="anchor-link" href="#Age-as-a-Confounding-Variable">¶</a></h2><p>Age is the strongest predictor of CHD risk in the data. However, age may also confound the relationship between other variables and CHD risk. For example, older individuals tend to have higher blood pressure and higher smoking exposure, so the observed relationship between blood pressure and CHD may be partly due to age rather than blood pressure alone.</p>
+<p>The model includes age alongside other predictors, which means the reported coefficients for blood pressure, smoking, and other variables represent their <strong>marginal effect after controlling for age</strong>. This approach is appropriate because:</p>
+<ol>
+<li>Age is a fundamental biological risk factor that should not be removed.</li>
+<li>Including age in the model allows us to estimate the independent effect of other variables.</li>
+<li>Clinically, we often ask: "For patients of similar age, what additional risk does their smoking status or blood pressure impose?"</li>
+</ol>
+<p>However, it's worth noting that:</p>
+<ul>
+<li>Simple pairwise correlations (e.g., systolic_bp with age = 0.40) may conflate age effects with blood pressure effects.</li>
+<li>The model's coefficients reflect the joint relationship and should not be interpreted in isolation.</li>
+<li>In real-world use, age-stratified models or interaction terms might provide additional insight, but this would complicate interpretation.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=69ad7116">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8053,13 +8076,18 @@ a.anchor-link {
 <li>Evidence from EDA.</li>
 <li>Avoiding unnecessary duplication among highly related measurements.</li>
 </ul>
-<p>Transformations:</p>
+<p><strong>Imputation Strategy:</strong></p>
+<p>Missing values are handled within the scikit-learn pipeline:</p>
 <ul>
-<li>Median imputation for numeric features.</li>
-<li>Most-frequent imputation for categorical features.</li>
-<li>Standard scaling for numeric features.</li>
+<li><strong>Numeric features</strong> (age, cholesterol, glucose, etc.): Median imputation. The median is robust to extreme values and represents the central tendency of observed values without assuming a distribution. The imputation strategy is learned from training data only.</li>
+<li><strong>Categorical features</strong> (sex, smoking status, education): Most-frequent imputation. This replaces missing values with the mode, preserving class distributions. For sex and smoking status, most-frequent imputation from training data typically yields sensible replacements.</li>
+</ul>
+<p>Why this approach? Missing data often contains information (e.g., a missing glucose value may be associated with older age or lower healthcare access). By imputing after splitting, we prevent the test set from influencing the imputation strategy, avoiding data leakage. These are simple, deterministic strategies that avoid over-engineering.</p>
+<p><strong>Transformations:</strong></p>
+<ul>
+<li>Log transforms for skewed cigarette and glucose values to improve model linearity and reduce the influence of extreme values.</li>
+<li>Standard scaling for numeric features so that coefficients are comparable and represent the effect of a one-standard-deviation change.</li>
 <li>One-hot encoding for categorical features.</li>
-<li>Log transforms for skewed cigarette and glucose values.</li>
 </ul>
 </div>
 </div>
@@ -8230,9 +8258,17 @@ Best cross-validated average precision: 0.354
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Metric-Choice-and-Optimal-Threshold">Metric Choice and Optimal Threshold<a class="anchor-link" href="#Metric-Choice-and-Optimal-Threshold">¶</a></h2><p>For this problem, recall matters more than raw accuracy because missing a high-risk CHD patient is more harmful than sending a lower-risk patient for follow-up. Precision still matters because a screening process with too many false positives becomes noisy and expensive.</p>
-<p>F2 is therefore used to choose the classification threshold. F2 weights recall more heavily than precision, which fits a preventive healthcare screening context.</p>
-<p>To avoid selecting the threshold on the final test set, out-of-fold probabilities are calculated on the training data, the F2-maximizing threshold is selected there, and that threshold is evaluated only once on the untouched test set.</p>
+<h2 id="Data-Leakage-Prevention">Data Leakage Prevention<a class="anchor-link" href="#Data-Leakage-Prevention">¶</a></h2><p><strong>Key principle</strong>: All preprocessing decisions, including imputation and scaling parameters, are learned only from training data and applied uniformly to test data. This prevents information from the test set from influencing model training.</p>
+<p>Steps taken:</p>
+<ol>
+<li>Train/test split is performed immediately after feature selection.</li>
+<li>EDA is conducted on the full dataset for understanding, but the pipeline is fit only on training data.</li>
+<li>Imputation strategies (median for numeric, most-frequent for categorical) are determined from <code>X_train</code> only.</li>
+<li>Scaling parameters are fit on <code>X_train</code> only.</li>
+<li>Out-of-fold (OOF) predictions are used for threshold selection during training, not test predictions.</li>
+<li>The optimal threshold is evaluated only once on the untouched test set.</li>
+</ol>
+<p>This workflow ensures that test-set statistics cannot influence any model decision.</p>
 </div>
 </div>
 </div>
@@ -8486,6 +8522,135 @@ Positive-class baseline rate: 0.150
 </div>
 </div>
 </div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=12caaa66">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Baseline-Model-Comparison">Baseline Model Comparison<a class="anchor-link" href="#Baseline-Model-Comparison">¶</a></h2><p>To validate that the logistic regression model adds value, we compare its performance against simple baseline models. A strong baseline is essential: without it, we cannot determine whether the model's metrics reflect genuine predictive power or simply the properties of the dataset.</p>
+<p><strong>Baseline strategies:</strong></p>
+<ol>
+<li><strong>Dummy Classifier (majority class)</strong>: Always predicts the most common class (no CHD). This is the trivial baseline—useful for assessing how difficult the problem is.</li>
+<li><strong>Dummy Classifier (stratified)</strong>: Randomly predicts in proportion to class frequencies. Represents a model with no signal, only dataset statistics.</li>
+</ol>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=176f732f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.dummy</span><span class="w"> </span><span class="kn">import</span> <span class="n">DummyClassifier</span>
+
+<span class="c1"># Baseline 1: Always predict the majority class (no CHD)</span>
+<span class="n">majority_dummy</span> <span class="o">=</span> <span class="n">DummyClassifier</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s2">"most_frequent"</span><span class="p">)</span>
+<span class="n">majority_dummy</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">majority_predictions</span> <span class="o">=</span> <span class="n">majority_dummy</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="c1"># Baseline 2: Predict according to class distribution (stratified)</span>
+<span class="n">stratified_dummy</span> <span class="o">=</span> <span class="n">DummyClassifier</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s2">"stratified"</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">stratified_dummy</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">stratified_predictions</span> <span class="o">=</span> <span class="n">stratified_dummy</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">evaluate_model</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">predictions</span><span class="p">):</span>
+    <span class="n">tn</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">tp</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"model"</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+        <span class="s2">"accuracy"</span><span class="p">:</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">),</span>
+        <span class="s2">"balanced_accuracy"</span><span class="p">:</span> <span class="n">balanced_accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">),</span>
+        <span class="s2">"precision"</span><span class="p">:</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+        <span class="s2">"recall"</span><span class="p">:</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+        <span class="s2">"f2_score"</span><span class="p">:</span> <span class="n">fbeta_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+        <span class="s2">"specificity"</span><span class="p">:</span> <span class="n">tn</span> <span class="o">/</span> <span class="p">(</span><span class="n">tn</span> <span class="o">+</span> <span class="n">fp</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">tn</span> <span class="o">+</span> <span class="n">fp</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">}</span>
+
+<span class="n">baseline_comparison</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">evaluate_model</span><span class="p">(</span><span class="s2">"Dummy: Majority class"</span><span class="p">,</span> <span class="n">majority_predictions</span><span class="p">),</span>
+        <span class="n">evaluate_model</span><span class="p">(</span><span class="s2">"Dummy: Stratified"</span><span class="p">,</span> <span class="n">stratified_predictions</span><span class="p">),</span>
+        <span class="n">evaluate_model</span><span class="p">(</span><span class="s2">"Logistic Regression (threshold=0.50)"</span><span class="p">,</span> <span class="p">(</span><span class="n">test_probabilities</span> <span class="o">&gt;=</span> <span class="mf">0.50</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)),</span>
+        <span class="n">evaluate_model</span><span class="p">(</span><span class="s2">"Logistic Regression (F2-optimized)"</span><span class="p">,</span> <span class="n">optimized_predictions</span><span class="p">),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">comparison_display</span> <span class="o">=</span> <span class="n">baseline_comparison</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">metric_columns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"accuracy"</span><span class="p">,</span>
+    <span class="s2">"balanced_accuracy"</span><span class="p">,</span>
+    <span class="s2">"precision"</span><span class="p">,</span>
+    <span class="s2">"recall"</span><span class="p">,</span>
+    <span class="s2">"f2_score"</span><span class="p">,</span>
+    <span class="s2">"specificity"</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">comparison_display</span><span class="p">[</span><span class="n">metric_columns</span><span class="p">]</span> <span class="o">=</span> <span class="n">comparison_display</span><span class="p">[</span><span class="n">metric_columns</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">go</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span>
+            <span class="n">header</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="n">column</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"_"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">comparison_display</span><span class="o">.</span><span class="n">columns</span><span class="p">],</span>
+                <span class="n">fill_color</span><span class="o">=</span><span class="s2">"#1f2937"</span><span class="p">,</span>
+                <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"white"</span><span class="p">),</span>
+                <span class="n">align</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">cells</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="n">comparison_display</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">comparison_display</span><span class="o">.</span><span class="n">columns</span><span class="p">],</span>
+                <span class="n">align</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Model Comparison: Logistic Regression vs. Baselines"</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">320</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="n">CHART_DIR</span> <span class="o">/</span> <span class="s2">"model_baseline_comparison.html"</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Model Comparison Summary:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">baseline_comparison</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✓ Insights:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  - Majority-class baseline accuracy: </span><span class="si">{</span><span class="n">baseline_comparison</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'accuracy'</span><span class="p">]</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  - Logistic Regression (optimized) accuracy: </span><span class="si">{</span><span class="n">baseline_comparison</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="s1">'accuracy'</span><span class="p">]</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  - Logistic Regression (optimized) recall: </span><span class="si">{</span><span class="n">baseline_comparison</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="s1">'recall'</span><span class="p">]</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  - Baseline recall (majority): </span><span class="si">{</span><span class="n">baseline_comparison</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'recall'</span><span class="p">]</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  - Improvement in recall: </span><span class="si">{</span><span class="p">(</span><span class="n">baseline_comparison</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="s1">'recall'</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">baseline_comparison</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'recall'</span><span class="p">])</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Model Comparison Summary:
+                               model  accuracy  balanced_accuracy  precision   recall  f2_score  specificity
+               Dummy: Majority class  0.849558           0.500000   0.000000 0.000000  0.000000     1.000000
+                   Dummy: Stratified  0.741888           0.513276   0.171171 0.186275  0.183044     0.840278
+Logistic Regression (threshold=0.50)  0.702065           0.679432   0.284483 0.647059  0.515625     0.711806
+  Logistic Regression (F2-optimized)  0.585546           0.679432   0.240580 0.813725  0.551129     0.545139
+
+✓ Insights:
+  - Majority-class baseline accuracy: 85.0%
+  - Logistic Regression (optimized) accuracy: 58.6%
+  - Logistic Regression (optimized) recall: 81.4%
+  - Baseline recall (majority): 0.0%
+  - Improvement in recall: 81.4%
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=39f0b4dd">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8501,7 +8666,7 @@ Positive-class baseline rate: 0.150
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">feature_names</span> <span class="o">=</span> <span class="n">best_model</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s2">"preprocess"</span><span class="p">]</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
@@ -8568,7 +8733,7 @@ Positive-class baseline rate: 0.150
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">top_coefficients</span> <span class="o">=</span> <span class="n">coefficient_table</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -8627,15 +8792,45 @@ Positive-class baseline rate: 0.150
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="Conclusions-and-Actionable-Insights">Conclusions and Actionable Insights<a class="anchor-link" href="#Conclusions-and-Actionable-Insights">¶</a></h2><ul>
-<li>The positive class is only 15.1%, so accuracy is not the lead metric; a majority-class model would already appear superficially strong.</li>
-<li>The optimized threshold is about 0.41, raising recall from 64.7% to 81.4% and reducing missed CHD cases from 36 to 19 in the test set.</li>
-<li>The model is best framed as follow-up prioritization, not diagnosis, because the higher recall comes with 262 false positives at the optimized threshold.</li>
+<li><p>The positive class is only 15.1%, so a majority-class baseline achieves 84.9% accuracy by predicting no CHD for everyone. This shows that raw accuracy is misleading; metrics like recall, F2, and balanced accuracy are more informative for imbalanced problems.</p>
+</li>
+<li><p><strong>Baseline comparison</strong>: The logistic regression model at the optimized threshold substantially outperforms the majority-class baseline on recall (detecting true CHD cases), achieving 81.4% recall versus 0% for the majority baseline. This demonstrates genuine predictive value.</p>
+</li>
+<li><p><strong>F2 metric</strong>: F2 score (where $\beta = 2$) is defined as $F_2 = \frac{5 \cdot \text{precision} \cdot \text{recall}}{4 \cdot \text{precision} + \text{recall}}$. It weights recall twice as heavily as precision, reflecting the clinical preference for catching high-risk patients even at the cost of more false positives. The optimized threshold is about 0.41, raising recall from 64.7% to 81.4% and reducing missed CHD cases from 36 to 19 in the test set.</p>
+</li>
+<li><p><strong>Data leakage prevention</strong>: The pipeline enforces strict train/test separation:</p>
+<ul>
+<li>Train/test split occurs immediately after feature selection.</li>
+<li>Imputation and scaling parameters are learned from training data only.</li>
+<li>Out-of-fold predictions are used for threshold selection, ensuring the test set is untouched until final evaluation.</li>
+<li>The optimal threshold is evaluated only once on the test set.</li>
+</ul>
+</li>
+<li><p>The model is best framed as follow-up prioritization, not diagnosis, because higher recall comes with 262 false positives at the optimized threshold.</p>
+</li>
+<li><p><strong>Age as a confounding variable</strong>: Age is the strongest predictor in the model. Other variables (blood pressure, smoking, cholesterol) have effects that are partially independent of age. The reported coefficients reflect the marginal effect after controlling for age.</p>
+</li>
 </ul>
 <h2 id="Limitations">Limitations<a class="anchor-link" href="#Limitations">¶</a></h2><ul>
 <li>The dataset is observational, so coefficients describe association rather than causation.</li>
 <li>Only 511 positive CHD cases are available, so the 0.41 threshold should be validated on external data before clinical use.</li>
 <li>Important predictors such as family history, diet, exercise, and detailed medication history are unavailable, limiting the model's clinical completeness.</li>
+<li>Simple imputation strategies assume missing-at-random (MAR) or missing-completely-at-random (MCAR) mechanisms; if missingness is related to the outcome (missing-not-at-random), these imputation methods may bias the model.</li>
 </ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=ce9ab4a8-bc8a-4232-90f4-3791803743dc">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+</div>
 </div>
 </div>
 </div>

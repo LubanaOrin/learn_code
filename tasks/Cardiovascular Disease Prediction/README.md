@@ -6,9 +6,9 @@ This project analyzes the Cardiovascular Study Dataset and builds a logistic reg
 
 The main focus is not only model fitting, but also explaining the full analytical workflow: data cleaning, feature engineering, variable selection, model evaluation, threshold optimization, and coefficient interpretation.
 
-## Files for Submission
+## Project Structure
 
-Recommended college Git upload structure:
+Recommended repository structure:
 
 ```text
 .
@@ -19,7 +19,7 @@ Recommended college Git upload structure:
     └── cardiovascular_disease_prediction.ipynb
 ```
 
-The notebook is self-contained and should be the main file reviewed.
+The notebook is self-contained and is the main analysis file.
 
 ## How to Run
 
