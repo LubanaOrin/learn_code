@@ -15,17 +15,9 @@ Local files:
 - `osmi-mental-health-in-tech-survey.zip`
 - `osmi-mental-health-in-tech-survey/survey.csv`
 
-## Download Status
-
-As of 2026-06-10, the survey result pages are accessible, but the direct ZIP URLs tested from the terminal returned 404 pages instead of real ZIP files.
-
-The user downloaded the Kaggle archive and provided it as `/Users/lubana/Downloads/archive.zip`.
-
-The archive was copied into this folder as `osmi-mental-health-in-tech-survey.zip` and extracted into `osmi-mental-health-in-tech-survey/`.
-
 ## Expected Files
 
-After download and extraction, this folder should contain files similar to:
+After download and extraction, this folder should contain:
 
 - `survey.csv`
 

@@ -45,9 +45,7 @@ What workplace and personal factors are associated with mental health treatment-
 - Presentation: `outputs/presentation/osmi_mental_health_capstone_presentation.pptx`
 - Presentation PDF preview: `outputs/presentation/osmi_mental_health_capstone_presentation.pdf`
 - Speaker notes: `outputs/presentation/osmi_mental_health_speaker_notes.md`
-- Final review checklist: `notes/final-review-checklist.md`
-
-The college-upload folder and submission ZIPs are kept locally and excluded from Git because they duplicate the portfolio deliverables above.
+Local submission packages are excluded from Git because they duplicate the portfolio deliverables above.
 
 ## Reproducibility
 
