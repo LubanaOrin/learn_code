@@ -26,13 +26,13 @@ How much time does it take same-day purchasing users to make their first purchas
 - Daily aggregation using median, average, p25, p75, and p90 duration.
 - Time-series visualization for daily progression.
 - Segment analysis by device category and country.
-- Limitation review to avoid overclaiming.
+- Limitation checks to avoid overclaiming.
 
 ## Expected Final Action
 
 Adopt weekly median same-day time to purchase as the headline KPI, supported by purchaser count, p75, and p90. Prioritize funnel-step timing as the next analysis because device category does not explain the long tail.
 
-Reviewer feedback supports this metric choice because the data contains outliers and median better represents the typical user than average. Future analysis should add a 7-day rolling median to reduce daily noise, clean inactive time from long durations, and test whether longer time to purchase is associated with higher order value.
+Future analysis should add a 7-day rolling median to reduce daily noise, clean inactive time from long durations, and test whether longer time to purchase is associated with higher order value.
 
 ## Ask, Prepare, Process, Analyze, Share, Act
 
@@ -42,10 +42,10 @@ The product manager wants to know how long users take to purchase after arriving
 
 ### Prepare
 
-The required data comes from the raw events table:
+The required data comes from a raw events table:
 
 ```sql
-`tc-da-1.turing_data_analytics.raw_events`
+`project.dataset.raw_events`
 ```
 
 Important fields include `event_timestamp`, `event_name`, `user_pseudo_id`, `country`, and `category`.

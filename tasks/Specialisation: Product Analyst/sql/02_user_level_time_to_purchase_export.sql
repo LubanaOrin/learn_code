@@ -15,7 +15,7 @@ WITH user_day_events AS (
     ) AS first_purchase_time,
     ANY_VALUE(country) AS country,
     ANY_VALUE(category) AS device_category
-  FROM `tc-da-1.turing_data_analytics.raw_events`
+  FROM `project.dataset.raw_events`
   WHERE DATE(TIMESTAMP_MICROS(event_timestamp)) BETWEEN '2020-11-01' AND '2021-01-31'
   GROUP BY
     event_date,

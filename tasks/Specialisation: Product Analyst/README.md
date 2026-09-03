@@ -1,4 +1,4 @@
-# Specialisation: Product Analyst
+# Product Analyst Time-to-Purchase Analysis
 
 ## Project Objective
 
@@ -28,10 +28,10 @@ Supporting questions:
 
 ## Main Dataset
 
-The source table is:
+The source data comes from an e-commerce raw events table with user, timestamp, event, device, and country fields. In the SQL files, replace the placeholder table with the relevant warehouse table before running the queries.
 
 ```sql
-`tc-da-1.turing_data_analytics.raw_events`
+`project.dataset.raw_events`
 ```
 
 The table contains 4,295,584 frontend event rows from 2020-11-01 to 2021-01-31.
@@ -129,16 +129,6 @@ The presentation leads with the PM decision and moves technical detail to the ap
 - Add a 7-day rolling median to smooth daily noise, especially on dates with lower purchase volume.
 - Remove likely inactive time from long durations before using the metric operationally.
 - Test whether longer time to purchase is associated with higher order value, using `purchase_revenue_in_usd` or a cleaned order-value field.
-
-## Review Feedback Incorporated
-
-The reviewer agreed that median is a stronger headline metric than average because the data contains many outliers. The reviewer also noted that p75 and p90 are useful supporting quantiles for investigating longer session durations.
-
-Recommended future improvements are:
-
-- use a rolling median, such as a 7-day rolling median, to reduce noisy daily movement;
-- clean or exclude inactive time from long purchase durations;
-- analyze whether longer time to purchase is connected to higher order value.
 
 ## Final Presentation
 

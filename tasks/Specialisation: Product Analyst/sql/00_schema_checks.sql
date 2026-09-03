@@ -8,7 +8,7 @@
 SELECT
   column_name,
   data_type
-FROM `tc-da-1.turing_data_analytics.INFORMATION_SCHEMA.COLUMNS`
+FROM `project.dataset.INFORMATION_SCHEMA.COLUMNS`
 WHERE table_name = 'raw_events'
 ORDER BY ordinal_position;
 
@@ -18,13 +18,13 @@ SELECT
   MAX(DATE(TIMESTAMP_MICROS(event_timestamp))) AS last_event_date,
   COUNT(*) AS events_count,
   COUNT(DISTINCT user_pseudo_id) AS users_count
-FROM `tc-da-1.turing_data_analytics.raw_events`;
+FROM `project.dataset.raw_events`;
 
 -- 3) Confirm which event names exist.
 SELECT
   event_name,
   COUNT(*) AS events_count
-FROM `tc-da-1.turing_data_analytics.raw_events`
+FROM `project.dataset.raw_events`
 GROUP BY event_name
 ORDER BY events_count DESC;
 
@@ -38,6 +38,6 @@ SELECT
   category AS device_category,
   browser,
   browser_version
-FROM `tc-da-1.turing_data_analytics.raw_events`
+FROM `project.dataset.raw_events`
 ORDER BY event_timestamp
 LIMIT 50;

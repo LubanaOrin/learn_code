@@ -18,7 +18,7 @@ WITH user_day_events AS (
         WHEN event_name = 'purchase' THEN TIMESTAMP_MICROS(event_timestamp)
       END
     ) AS first_purchase_time
-  FROM `tc-da-1.turing_data_analytics.raw_events`
+  FROM `project.dataset.raw_events`
   WHERE DATE(TIMESTAMP_MICROS(event_timestamp)) BETWEEN '2020-11-01' AND '2021-01-31'
   GROUP BY
     event_date,
