@@ -184,7 +184,7 @@ def build_slides(m):
         ),
         m.text_box(
             14,
-            "Source: tc-da-1.turing_data_analytics.raw_events",
+            "Source: BigQuery raw events export",
             emu(78),
             emu(640),
             emu(750),
@@ -270,7 +270,7 @@ def build_slides(m):
         43,
     )
     slides.append(m.slide_xml(e))
-    notes.append("This slide teaches the session modeling logic. It also prepares the reviewer for questions about how time on site was interpreted.")
+    notes.append("This slide teaches the session modeling logic. It also prepares for questions about how time on site was interpreted.")
 
     # Slide 4
     e = m.header(
@@ -371,7 +371,7 @@ def build_slides(m):
         m.text_box(362, "12.44 min\nn=2", emu(125), emu(405), emu(300), emu(58), 16, m.ORANGE, True, "c"),
         m.text_box(
             363,
-            "Answer to review question: it did not take longer than 1 hour.",
+            "Answer to stakeholder question: it did not take longer than 1 hour.",
             emu(95),
             emu(510),
             emu(365),
@@ -381,7 +381,7 @@ def build_slides(m):
         ),
     ]
     slides.append(m.slide_xml(e))
-    notes.append("Use this slide to answer the likely review question and explain why high averages from tiny samples are not enough for a budget decision.")
+    notes.append("Use this slide to answer the likely stakeholder question and explain why high averages from tiny samples are not enough for a budget decision.")
 
     # Slide 7
     e = m.header(
@@ -453,7 +453,7 @@ def build_slides(m):
         58,
     )
     slides.append(m.slide_xml(e))
-    notes.append("This slide shows analytical maturity. Name the assumptions and boundaries clearly so the reviewer knows you understand the metric.")
+    notes.append("This slide shows analytical maturity. Name the assumptions and boundaries clearly so the metric is easy to defend.")
 
     # Slide 9
     e = m.header(

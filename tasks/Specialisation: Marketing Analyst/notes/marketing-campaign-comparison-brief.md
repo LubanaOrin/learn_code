@@ -1,8 +1,8 @@
 # Marketing Campaign Comparison Brief
 
-## Assignment Focus
+## Project Focus
 
-The final task asks us to identify trends in website time spent across weekdays and marketing campaigns.
+This project identifies trends in website time spent across weekdays and marketing campaigns.
 
 The key metric is:
 
@@ -30,7 +30,7 @@ Columns:
 
 - `campaign`: marketing campaign name.
 - `weekday_name`: weekday label.
-- `weekday_number`: weekday order from BigQuery, where Sunday is 1 and Saturday is 7.
+- `weekday_number`: weekday order where Sunday is 1 and Saturday is 7.
 - `weekday_sort_monday_start`: weekday order for charts, where Monday is 1 and Sunday is 7.
 - `sessions`: number of modeled sessions.
 - `avg_session_duration_minutes`: average session duration.
@@ -76,7 +76,7 @@ This task can use two course techniques:
 
 ## Next Step
 
-Run this SQL file in BigQuery:
+Run this SQL file against a compatible raw events table:
 
 `tasks/Specialisation: Marketing Analyst/sql/marketing_campaign_comparison_session_duration.sql`
 

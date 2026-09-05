@@ -2,15 +2,11 @@
 
 ## Goal
 
-Complete the final task for **Specialisation: Marketing Analyst**.
+Complete the marketing campaign comparison analysis.
 
-The graded task asks us to compare marketing campaigns by how long users spend on the e-commerce website on different weekdays.
+The task compares marketing campaigns by how long users spend on the e-commerce website on different weekdays.
 
-The main table path from the previous specialization work and the table details is:
-
-`tc-da-1.turing_data_analytics.raw_events`
-
-The assignment wording also mentions `turing_college.raw_events`. If BigQuery shows that name in your workspace, use the same SQL logic and only replace the table path.
+The analysis uses an event-level e-commerce raw events table in BigQuery. In the public SQL, the source table is represented as a placeholder so the logic can be reused with any compatible dataset.
 
 The important columns are:
 
@@ -40,18 +36,18 @@ That means we must create our own session logic. A **session** means one visit t
 - the previous event was on a different day; or
 - the gap between events is more than 30 minutes.
 
-This is a common web analytics rule. It is not perfect, but it is reasonable and easy to explain in a review.
+This is a common web analytics rule. It is not perfect, but it is reasonable and easy to explain.
 
 ## Phases
 
-### Phase 1: Understand the Assignment
+### Phase 1: Understand the Task
 
 Status: Done
 
 What we did:
 
-- Read the Marketing Analyst Word document.
-- Focused only on the final graded task: **Marketing Campaign Comparison**.
+- Read the project instructions.
+- Focused on the final task: **Marketing Campaign Comparison**.
 - Checked the Excel workbook only as a learning reference.
 - Confirmed the workbook should not be copied into the repository.
 
@@ -67,7 +63,7 @@ What we did:
 - Created a new session whenever there is a new day or a gap longer than 30 minutes.
 - Calculated session duration from first event to last event.
 - Grouped average and median session duration by campaign and weekday.
-- Added a human-readable `HH:MM:SS` average duration field for review questions.
+- Added a human-readable `HH:MM:SS` average duration field for presentation discussion.
 
 ### Phase 3: Export Query Results
 
@@ -75,7 +71,7 @@ Status: Done
 
 What we did:
 
-- Imported the BigQuery export from `Downloads`.
+- Imported the query export.
 - Saved the CSV in:
 
 `tasks/Specialisation: Marketing Analyst/data/marketing_campaign_weekday_duration.csv`
@@ -96,9 +92,9 @@ What we created:
 - `outputs/charts/campaign_sample_size_context.png`
 - `outputs/charts/top_weekday_campaign_duration_combinations.png`
 - `outputs/marketing_campaign_comparison_findings.md`
-- `outputs/FINAL_SUBMISSION_FILES/marketing_campaign_comparison_presentation.pptx`
+- `outputs/marketing_campaign_comparison_presentation.pptx`
 
-### Phase 5: Final Review
+### Phase 5: Final QA
 
 Status: Done
 

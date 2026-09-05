@@ -135,7 +135,7 @@ def build_reliable_campaign_chart(df: pd.DataFrame) -> Path:
     fig.text(
         0.01,
         0.01,
-        "Source: BigQuery export from tc-da-1.turing_data_analytics.raw_events. Sessions modeled with a 30-minute inactivity timeout.",
+        "Source: BigQuery export from a raw events table. Sessions modeled with a 30-minute inactivity timeout.",
         fontsize=9,
         color="#5F6B7A",
     )

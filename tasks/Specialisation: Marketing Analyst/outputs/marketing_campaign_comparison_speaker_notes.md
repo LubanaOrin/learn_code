@@ -10,7 +10,7 @@ Explain the decision rule: a marketing analyst should not simply pick the talles
 
 ## Slide 3
 
-This slide teaches the session modeling logic. It also prepares the reviewer for questions about how time on site was interpreted.
+This slide teaches the session modeling logic. It also prepares for questions about how time on site was interpreted.
 
 ## Slide 4
 
@@ -22,7 +22,7 @@ This slide is the evidence-quality slide. It prevents overclaiming small named c
 
 ## Slide 6
 
-Use this slide to answer the likely review question and explain why high averages from tiny samples are not enough for a budget decision.
+Use this slide to answer the likely stakeholder question and explain why high averages from tiny samples are not enough for a budget decision.
 
 ## Slide 7
 
@@ -30,7 +30,7 @@ Explain that a longer session can mean engagement or friction. This is why the n
 
 ## Slide 8
 
-This slide shows analytical maturity. Name the assumptions and boundaries clearly so the reviewer knows you understand the metric.
+This slide shows analytical maturity. Name the assumptions and boundaries clearly so the metric is easy to defend.
 
 ## Slide 9
 

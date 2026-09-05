@@ -340,7 +340,7 @@ def build_workbook() -> None:
     readme_lines = [
         ("A1", "Marketing Campaign Comparison Dashboard", 18, True),
         ("A3", "Source", 13, True),
-        ("A4", "BigQuery export from tc-da-1.turing_data_analytics.raw_events.", 11, False),
+        ("A4", "BigQuery export from a raw events table.", 11, False),
         ("A6", "Metric definition", 13, True),
         (
             "A7",

@@ -11,8 +11,8 @@
 --     3. the time gap from the previous event is more than 30 minutes.
 --
 -- BigQuery note:
---   If your course table uses a different full table path, replace the table
---   name in the base_events CTE.
+--   Replace the table placeholder in the base_events CTE with your compatible
+--   raw events table.
 
 WITH base_events AS (
   SELECT
@@ -21,7 +21,7 @@ WITH base_events AS (
     user_pseudo_id,
     NULLIF(TRIM(campaign), '') AS campaign,
     event_name
-  FROM `tc-da-1.turing_data_analytics.raw_events`
+  FROM `project.dataset.raw_events`
   WHERE user_pseudo_id IS NOT NULL
     AND event_timestamp IS NOT NULL
     AND event_date IS NOT NULL
