@@ -1,4 +1,4 @@
--- Specialisation: Product Analyst
+-- Product Analyst Time-to-Purchase Analysis
 -- Phase 1: BigQuery schema checks
 --
 -- Run these queries first in BigQuery.

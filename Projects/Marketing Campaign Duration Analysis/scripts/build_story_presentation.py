@@ -18,7 +18,7 @@ TASK_DIR = Path(__file__).resolve().parents[1]
 REPO_TASKS = TASK_DIR.parent
 PRODUCT_BUILDER = (
     REPO_TASKS
-    / "Specialisation: Product Analyst"
+    / "Product Analyst Time to Purchase Analysis"
     / "scripts"
     / "build_presentation.py"
 )

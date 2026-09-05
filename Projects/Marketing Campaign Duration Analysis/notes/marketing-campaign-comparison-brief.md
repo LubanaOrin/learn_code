@@ -78,8 +78,8 @@ This task can use two course techniques:
 
 Run this SQL file against a compatible raw events table:
 
-`tasks/Specialisation: Marketing Analyst/sql/marketing_campaign_comparison_session_duration.sql`
+`Projects/Marketing Campaign Duration Analysis/sql/marketing_campaign_comparison_session_duration.sql`
 
 Then export the result as CSV to:
 
-`tasks/Specialisation: Marketing Analyst/data/marketing_campaign_weekday_duration.csv`
+`Projects/Marketing Campaign Duration Analysis/data/marketing_campaign_weekday_duration.csv`

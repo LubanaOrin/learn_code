@@ -74,7 +74,7 @@ What we did:
 - Imported the query export.
 - Saved the CSV in:
 
-`tasks/Specialisation: Marketing Analyst/data/marketing_campaign_weekday_duration.csv`
+`Projects/Marketing Campaign Duration Analysis/data/marketing_campaign_weekday_duration.csv`
 
 Result:
 

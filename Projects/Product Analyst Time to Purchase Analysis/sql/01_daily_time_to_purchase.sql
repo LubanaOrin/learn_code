@@ -1,4 +1,4 @@
--- Specialisation: Product Analyst
+-- Product Analyst Time-to-Purchase Analysis
 -- Main task: daily time from first same-day arrival to first same-day purchase
 --
 -- Definition used here:
